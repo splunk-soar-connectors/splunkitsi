@@ -1,8 +1,8 @@
 [comment]: # "Auto-generated SOAR connector documentation"
-# Splunk IT Service Intelligence
+# Splunk IT Service Intelligence for SOAR
 
 Publisher: Splunk Community  
-Connector Version: 1\.0\.2  
+Connector Version: 1\.0\.3  
 Product Vendor: Splunk  
 Product Name: Splunk ITSI  
 Product Version Supported (regex): "\.\*"  

@@ -22,3 +22,4 @@ TYPE_ERR_MSG = "Error occurred while connecting to the Splunk IT Service Intelli
 
 VALID_INTEGER_MSG = "Please provide a valid integer value in the {key}"
 NON_NEGATIVE_INTEGER_MSG = "Please provide a valid non-negative integer value in the {key}"
+SPLUNKITSI_DEFAULT_REQUEST_TIMEOUT = 30  # in seconds

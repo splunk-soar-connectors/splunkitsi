@@ -10,12 +10,13 @@
     "product_version_regex": ".*",
     "publisher": "Splunk Community",
     "license": "Copyright (c) 2020 Splunk Inc.",
-    "app_version": "1.0.3",
+    "app_version": "2.0.0",
     "utctime_updated": "2022-01-07T21:44:26.000000Z",
     "package_name": "phantom_splunkitsi",
-    "main_module": "splunkitsi_connector.pyc",
+    "main_module": "splunkitsi_connector.py",
     "min_phantom_version": "4.8.24304",
-    "python_version": "2.7",
+    "python_version": "3",
+    "fips_compliant": true,
     "app_wizard_version": "1.0.0",
     "configuration": {
         "base_url": {
@@ -66,6 +67,9 @@
                     "description": "Splunk ITSI maintenance window ID",
                     "data_type": "string",
                     "required": true,
+                    "contains": [
+                        "splunk itsi maintenance window id"
+                    ],
                     "order": 0
                 },
                 "comment": {
@@ -80,6 +84,9 @@
                     "data_path": "action_result.parameter.maintenance_window_id",
                     "data_type": "string",
                     "column_name": "Maintenance Window ID",
+                    "contains": [
+                        "splunk itsi maintenance window id"
+                    ],
                     "column_order": 0
                 },
                 {
@@ -127,6 +134,20 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "628c6b1dcde00363c71d6fec"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully ended maintenance window"
+                    ]
                 }
             ],
             "render": {
@@ -145,6 +166,9 @@
                     "description": "Splunk ITSI maintenance window ID",
                     "data_type": "string",
                     "required": true,
+                    "contains": [
+                        "splunk itsi maintenance window id"
+                    ],
                     "order": 0
                 },
                 "title": {
@@ -197,6 +221,9 @@
                     "data_path": "action_result.parameter.maintenance_window_id",
                     "data_type": "string",
                     "column_name": "Maintenance Window ID",
+                    "contains": [
+                        "splunk itsi maintenance window id"
+                    ],
                     "column_order": 0
                 },
                 {
@@ -281,6 +308,20 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "628c6b1dcde00363c71d6fec"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully updated maintenance window"
                     ]
                 }
             ],
@@ -435,6 +476,20 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "628c6b1dcde00363c71d6fec"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully added maintenance window"
+                    ]
                 }
             ],
             "render": {
@@ -453,6 +508,9 @@
                     "description": "Splunk ITSI maintenance window ID",
                     "data_type": "string",
                     "required": true,
+                    "contains": [
+                        "splunk itsi maintenance window id"
+                    ],
                     "order": 0
                 }
             },
@@ -461,6 +519,9 @@
                     "data_path": "action_result.parameter.maintenance_window_id",
                     "data_type": "string",
                     "column_name": "Maintenance Window ID",
+                    "contains": [
+                        "splunk itsi maintenance window id"
+                    ],
                     "column_order": 0
                 },
                 {
@@ -501,6 +562,111 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "628c6b1dcde00363c71d6fec"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._user",
+                    "data_type": "string",
+                    "example_value": [
+                        "nobody"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.title",
+                    "data_type": "string",
+                    "example_value": [
+                        "New maintenance window (1653369273:24)"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.comment",
+                    "data_type": "string",
+                    "example_value": [
+                        "sample comment"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.objects.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "b3c6a349-f927-4313-bba1-e5080aa09a88"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.objects.*.object_type",
+                    "data_type": "string",
+                    "example_value": [
+                        "service"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._version",
+                    "data_type": "string",
+                    "example_value": [
+                        "4.11.5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.can_edit",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.end_time",
+                    "data_type": "numeric",
+                    "example_value": [
+                        1653369273
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_source",
+                    "data_type": "string",
+                    "example_value": [
+                        "unknown"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.start_time",
+                    "data_type": "numeric",
+                    "example_value": [
+                        1651362319
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.object_type",
+                    "data_type": "string",
+                    "example_value": [
+                        "maintenance_calendar"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_timestamp",
+                    "data_type": "string",
+                    "example_value": [
+                        "2022-05-24T05:20:29.350678+00:00"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.identifying_name",
+                    "data_type": "string",
+                    "example_value": [
+                        "new maintenance window (1653369273:24)"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully retrieved maintenance window"
                     ]
                 }
             ],
@@ -593,6 +759,20 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "61866623-79bb-4be0-a0c6-fa549a225b1a"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully updated the service status"
+                    ]
                 }
             ],
             "render": {
@@ -666,6 +846,181 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "5b2ec957-d27c-4702-9c88-41305a5777c4"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*._type",
+                    "data_type": "string",
+                    "example_value": [
+                        "entity"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*._user",
+                    "data_type": "string",
+                    "example_value": [
+                        "nobody"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.title",
+                    "data_type": "string",
+                    "example_value": [
+                        "5.3.0-83826-n1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*._owner",
+                    "data_type": "string",
+                    "example_value": [
+                        "nobody"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.sec_grp",
+                    "data_type": "string",
+                    "example_value": [
+                        "default_itsi_security_group"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*._version",
+                    "data_type": "string",
+                    "example_value": [
+                        "4.11.4"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.mod_time",
+                    "data_type": "string",
+                    "example_value": [
+                        "2022-03-25 17:15:57"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.services.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "b3c6a349-f927-4313-bba1-e5080aa09a88"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.services.*.title",
+                    "data_type": "string",
+                    "example_value": [
+                        "Splunk app for SOAR - OS Metrics"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.create_by",
+                    "data_type": "string",
+                    "example_value": [
+                        "admin"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.mod_source",
+                    "data_type": "string",
+                    "example_value": [
+                        "manual"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.create_time",
+                    "data_type": "string",
+                    "example_value": [
+                        "2022-03-25 17:15:57"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.object_type",
+                    "data_type": "string",
+                    "example_value": [
+                        "entity"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.permissions.read",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.permissions.user",
+                    "data_type": "string",
+                    "example_value": [
+                        "admin"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.permissions.group.read",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.permissions.group.write",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.permissions.group.delete",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.permissions.write",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.permissions.delete",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.create_source",
+                    "data_type": "string",
+                    "example_value": [
+                        "manual"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.mod_timestamp",
+                    "data_type": "string",
+                    "example_value": [
+                        "2022-03-26T00:16:22.404837+00:00"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.*.identifying_name",
+                    "data_type": "string",
+                    "example_value": [
+                        "5.3.0-83826-n1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully retrieved the service entities"
                     ]
                 }
             ],
@@ -741,6 +1096,1154 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "61866623-79bb-4be0-a0c6-fa549a225b1a"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "SHKPI-61866623-79bb-4be0-a0c6-fa549a225b1a"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.type",
+                    "data_type": "string",
+                    "example_value": [
+                        "service_health"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.unit",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.title",
+                    "data_type": "string",
+                    "example_value": [
+                        "ServiceHealthScore"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*._owner",
+                    "data_type": "string",
+                    "example_value": [
+                        "nobody"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.metric.metric_name",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.metric.metric_index",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search",
+                    "data_type": "string",
+                    "example_value": [
+                        "`get_full_itsi_summary_service_health_events(61866623-79bb-4be0-a0c6-fa549a225b1a)` | stats latest(health_score) AS aggregate"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.source",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.target",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.urgency",
+                    "data_type": "string",
+                    "example_value": [
+                        "11"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.alert_on",
+                    "data_type": "string",
+                    "example_value": [
+                        "both"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.alert_lag",
+                    "data_type": "string",
+                    "example_value": [
+                        "30"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.datamodel.field",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.datamodel.object",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.datamodel.datamodel",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.datamodel.owner_field",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.fill_gaps",
+                    "data_type": "string",
+                    "example_value": [
+                        "null_value"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.tz_offset",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.alert_eval",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.service_id",
+                    "data_type": "string",
+                    "example_value": [
+                        "61866623-79bb-4be0-a0c6-fa549a225b1a"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.base_search",
+                    "data_type": "string",
+                    "example_value": [
+                        "`get_full_itsi_summary_service_health_events(61866623-79bb-4be0-a0c6-fa549a225b1a)`"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.cohesive_ad.sensitivity",
+                    "data_type": "numeric",
+                    "example_value": [
+                        8
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_type",
+                    "data_type": "string",
+                    "example_value": [
+                        "adhoc"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.trending_ad.sensitivity",
+                    "data_type": "numeric",
+                    "example_value": [
+                        8
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.alert_period",
+                    "data_type": "string",
+                    "example_value": [
+                        "1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.gap_severity",
+                    "data_type": "string",
+                    "example_value": [
+                        "unknown"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_alert",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_statop",
+                    "data_type": "string",
+                    "example_value": [
+                        "avg"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.service_title",
+                    "data_type": "string",
+                    "example_value": [
+                        "Splunk app for SOAR  - System Health"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_eval",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_buckets",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.threshold_eval",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.kpi_base_search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.threshold_field",
+                    "data_type": "string",
+                    "example_value": [
+                        "aggregate"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_statop",
+                    "data_type": "string",
+                    "example_value": [
+                        "avg"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.backfill_enabled",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_id_fields",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_aggregate",
+                    "data_type": "string",
+                    "example_value": [
+                        "`get_full_itsi_summary_service_health_events(61866623-79bb-4be0-a0c6-fa549a225b1a)` | stats latest(health_score) AS aggregate"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.gaugeMax",
+                    "data_type": "numeric",
+                    "example_value": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.gaugeMin",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.isMaxStatic",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.isMinStatic",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.metricField",
+                    "data_type": "string",
+                    "example_value": [
+                        "count"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.thresholdLevels.*.severityColor",
+                    "data_type": "string",
+                    "example_value": [
+                        "#B50101"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.thresholdLevels.*.severityLabel",
+                    "data_type": "string",
+                    "example_value": [
+                        "critical"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.thresholdLevels.*.severityValue",
+                    "data_type": "numeric",
+                    "example_value": [
+                        6
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.thresholdLevels.*.thresholdValue",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.thresholdLevels.*.severityColorLight",
+                    "data_type": "string",
+                    "example_value": [
+                        "#E5A6A6"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.baseSeverityColor",
+                    "data_type": "string",
+                    "example_value": [
+                        "#99D18B"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.baseSeverityLabel",
+                    "data_type": "string",
+                    "example_value": [
+                        "normal"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.baseSeverityValue",
+                    "data_type": "numeric",
+                    "example_value": [
+                        2
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.renderBoundaryMax",
+                    "data_type": "numeric",
+                    "example_value": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.renderBoundaryMin",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.baseSeverityColorLight",
+                    "data_type": "string",
+                    "example_value": [
+                        "#DCEFD7"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.gap_severity_color",
+                    "data_type": "string",
+                    "example_value": [
+                        "#CCCCCC"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.gap_severity_value",
+                    "data_type": "string",
+                    "example_value": [
+                        "-1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_occurrences",
+                    "data_type": "numeric",
+                    "example_value": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_time_series",
+                    "data_type": "string",
+                    "example_value": [
+                        "`get_full_itsi_summary_service_health_events(61866623-79bb-4be0-a0c6-fa549a225b1a)` | timechart avg(health_score) AS aggregate"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.is_entity_breakdown",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.kpi_template_kpi_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_time_compare",
+                    "data_type": "string",
+                    "example_value": [
+                        "`get_full_itsi_summary_service_health_events(61866623-79bb-4be0-a0c6-fa549a225b1a)` [| stats count | addinfo | eval search= \"earliest=\" + tostring(info_min_time-(info_max_time-info_min_time))+ \" latest=\" + tostring(info_max_time) |fields search] | addinfo | eval bucket=if(_time<info_max_time-((info_max_time-info_min_time)/2), \"last_window\", \"current_window\") | stats avg(health_score) AS aggregate BY bucket | reverse | delta aggregate AS window_delta | search bucket=current_window | eval window_direction=if(window_delta >0, \"increase\", if(window_delta < 0, \"decrease\", \"none\"))"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.gaugeMax",
+                    "data_type": "numeric",
+                    "example_value": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.gaugeMin",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.isMaxStatic",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.isMinStatic",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.metricField",
+                    "data_type": "string",
+                    "example_value": [
+                        "count"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.thresholdLevels.*.severityColor",
+                    "data_type": "string",
+                    "example_value": [
+                        "#B50101"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.thresholdLevels.*.severityLabel",
+                    "data_type": "string",
+                    "example_value": [
+                        "critical"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.thresholdLevels.*.severityValue",
+                    "data_type": "numeric",
+                    "example_value": [
+                        6
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.thresholdLevels.*.thresholdValue",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.thresholdLevels.*.severityColorLight",
+                    "data_type": "string",
+                    "example_value": [
+                        "#E5A6A6"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.baseSeverityColor",
+                    "data_type": "string",
+                    "example_value": [
+                        "#99D18B"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.baseSeverityLabel",
+                    "data_type": "string",
+                    "example_value": [
+                        "normal"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.baseSeverityValue",
+                    "data_type": "numeric",
+                    "example_value": [
+                        2
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.renderBoundaryMax",
+                    "data_type": "numeric",
+                    "example_value": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.renderBoundaryMin",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.baseSeverityColorLight",
+                    "data_type": "string",
+                    "example_value": [
+                        "#DCEFD7"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_alert_earliest",
+                    "data_type": "string",
+                    "example_value": [
+                        "15"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_alert_entities",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.backfill_earliest_time",
+                    "data_type": "string",
+                    "example_value": [
+                        "-7d"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.gap_custom_alert_value",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.gap_severity_color_light",
+                    "data_type": "string",
+                    "example_value": [
+                        "#EEEEEE"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.is_service_entity_filter",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.kpi_threshold_template_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_breakdown_id_fields",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_time_series_entities",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.anomaly_detection_is_enabled",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_time_series_aggregate",
+                    "data_type": "string",
+                    "example_value": [
+                        "`get_full_itsi_summary_service_health_events(61866623-79bb-4be0-a0c6-fa549a225b1a)` | timechart avg(health_score) AS aggregate"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.anomaly_detection_sensitivity",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0.999
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.adaptive_thresholds_is_enabled",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.anomaly_detection_training_window",
+                    "data_type": "string",
+                    "example_value": [
+                        "-7d"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds_alert_enabled",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.anomaly_detection_alerting_enabled",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.adaptive_thresholding_training_window",
+                    "data_type": "string",
+                    "example_value": [
+                        "-7d"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.cohesive_anomaly_detection_is_enabled",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.title",
+                    "data_type": "string",
+                    "example_value": [
+                        "Default"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.policy_type",
+                    "data_type": "string",
+                    "example_value": [
+                        "static"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.gaugeMax",
+                    "data_type": "numeric",
+                    "example_value": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.gaugeMin",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.isMaxStatic",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.isMinStatic",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.metricField",
+                    "data_type": "string",
+                    "example_value": [
+                        "count"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.baseSeverityColor",
+                    "data_type": "string",
+                    "example_value": [
+                        "#AED3E5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.baseSeverityLabel",
+                    "data_type": "string",
+                    "example_value": [
+                        "info"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.baseSeverityValue",
+                    "data_type": "numeric",
+                    "example_value": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.renderBoundaryMax",
+                    "data_type": "numeric",
+                    "example_value": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.renderBoundaryMin",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.baseSeverityColorLight",
+                    "data_type": "string",
+                    "example_value": [
+                        "#E3F0F6"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.search",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.gaugeMax",
+                    "data_type": "numeric",
+                    "example_value": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.gaugeMin",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.isMaxStatic",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.isMinStatic",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.metricField",
+                    "data_type": "string",
+                    "example_value": [
+                        "count"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.baseSeverityColor",
+                    "data_type": "string",
+                    "example_value": [
+                        "#AED3E5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.baseSeverityLabel",
+                    "data_type": "string",
+                    "example_value": [
+                        "info"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.baseSeverityValue",
+                    "data_type": "numeric",
+                    "example_value": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.renderBoundaryMax",
+                    "data_type": "numeric",
+                    "example_value": [
+                        100
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.renderBoundaryMin",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.baseSeverityColorLight",
+                    "data_type": "string",
+                    "example_value": [
+                        "#E3F0F6"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds_custom_alert_enabled",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.enabled",
+                    "data_type": "numeric",
+                    "example_value": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.search_entities",
+                    "data_type": "string",
+                    "example_value": [
+                        "`splunk_app_soar_indexes`  sourcetype=\"nginx:plus:access\" status=4* | `aggregate_raw_into_single_value(count, sum, _time, \"host\", 15)` | `assess_severity(61866623-79bb-4be0-a0c6-fa549a225b1a, d3fda074d51c958f7d52ff93)`"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_thresholds.thresholdLevels.*.dynamicParam",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.aggregate_thresholds.thresholdLevels.*.dynamicParam",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._user",
+                    "data_type": "string",
+                    "example_value": [
+                        "nobody"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.title",
+                    "data_type": "string",
+                    "example_value": [
+                        "Splunk app for SOAR  - System Health"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._owner",
+                    "data_type": "string",
+                    "example_value": [
+                        "nobody"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.enabled",
+                    "data_type": "numeric",
+                    "example_value": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sec_grp",
+                    "data_type": "string",
+                    "example_value": [
+                        "default_itsi_security_group"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._version",
+                    "data_type": "string",
+                    "example_value": [
+                        "4.11.5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.LinearRegression.RMSE",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.LinearRegression.modelId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.LinearRegression.rSquared",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.LinearRegression.recommended",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.LogisticRegression.recall",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.LogisticRegression.modelId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.LogisticRegression.accuracy",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.LogisticRegression.f1_score",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.LogisticRegression.precision",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.LogisticRegression.recommended",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.RandomForestRegressor.RMSE",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.RandomForestRegressor.modelId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.RandomForestRegressor.rSquared",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.RandomForestRegressor.recommended",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.GradientBoostingRegressor.RMSE",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.GradientBoostingRegressor.modelId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.GradientBoostingRegressor.rSquared",
+                    "data_type": "numeric",
+                    "example_value": [
+                        0
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.algorithms.GradientBoostingRegressor.recommended",
+                    "data_type": "boolean",
+                    "example_value": [
+                        false
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_source",
+                    "data_type": "string",
+                    "example_value": [
+                        "REST"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.object_type",
+                    "data_type": "string",
+                    "example_value": [
+                        "service"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.read",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.user",
+                    "data_type": "string",
+                    "example_value": [
+                        "admin"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.group.read",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.group.write",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.group.delete",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.write",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.delete",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.entity_rules.*.rule_items.*.field",
+                    "data_type": "string",
+                    "example_value": [
+                        "host"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.entity_rules.*.rule_items.*.value",
+                    "data_type": "string",
+                    "example_value": [
+                        "*Test*"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.entity_rules.*.rule_items.*.rule_type",
+                    "data_type": "string",
+                    "example_value": [
+                        "matches"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.entity_rules.*.rule_items.*.field_type",
+                    "data_type": "string",
+                    "example_value": [
+                        "alias"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.entity_rules.*.rule_condition",
+                    "data_type": "string",
+                    "example_value": [
+                        "AND"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_timestamp",
+                    "data_type": "string",
+                    "example_value": [
+                        "2022-05-19T00:44:57.319395+00:00"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.identifying_name",
+                    "data_type": "string",
+                    "example_value": [
+                        "splunk app for soar  - system health"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.serviceTemplateId",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.isFirstTimeSaveDone",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.service_template_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.base_service_template_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.is_healthscore_calculate_by_entity_enabled",
+                    "data_type": "numeric",
+                    "example_value": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully retrieved the service"
+                    ]
                 }
             ],
             "render": {
@@ -807,6 +2310,174 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "fe428761-ebfc-431c-862c-b9ef79faaace"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._type",
+                    "data_type": "string",
+                    "example_value": [
+                        "entity"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._user",
+                    "data_type": "string",
+                    "example_value": [
+                        "nobody"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.title",
+                    "data_type": "string",
+                    "example_value": [
+                        "Sample Title"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._owner",
+                    "data_type": "string",
+                    "example_value": [
+                        "nobody"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sec_grp",
+                    "data_type": "string",
+                    "example_value": [
+                        "default_itsi_security_group"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._version",
+                    "data_type": "string",
+                    "example_value": [
+                        "4.11.5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_time",
+                    "data_type": "string",
+                    "example_value": [
+                        "2022-05-16 01:18:05"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.create_by",
+                    "data_type": "string",
+                    "example_value": [
+                        "admin"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_source",
+                    "data_type": "string",
+                    "example_value": [
+                        "manual"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.create_time",
+                    "data_type": "string",
+                    "example_value": [
+                        "2022-05-16 01:18:05"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.description",
+                    "data_type": "string",
+                    "example_value": [
+                        "sample description"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.object_type",
+                    "data_type": "string",
+                    "example_value": [
+                        "entity"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.read",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.user",
+                    "data_type": "string",
+                    "example_value": [
+                        "admin"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.group.read",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.group.write",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.group.delete",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.write",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.permissions.delete",
+                    "data_type": "boolean",
+                    "example_value": [
+                        true
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.create_source",
+                    "data_type": "string",
+                    "example_value": [
+                        "manual"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_timestamp",
+                    "data_type": "string",
+                    "example_value": [
+                        "2022-05-16T08:18:00.737813+00:00"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.identifying_name",
+                    "data_type": "string",
+                    "example_value": [
+                        "sample name"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully retrieved the entity"
                     ]
                 }
             ],
@@ -882,6 +2553,64 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*.*._key",
+                    "data_type": "string",
+                    "example_value": "1365ea26-d4ef-11ec-bb74-005056aa27a0"
+                },
+                {
+                    "data_path": "action_result.data.*.*._user",
+                    "data_type": "string",
+                    "example_value": "nobody"
+                },
+                {
+                    "data_path": "action_result.data.*.*.tickets.*.ticket_id",
+                    "data_type": "string",
+                    "example_value": "INC1234567"
+                },
+                {
+                    "data_path": "action_result.data.*.*.tickets.*.ticket_url",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.*.tickets.*.ticket_system",
+                    "data_type": "string",
+                    "example_value": "ServiceNow"
+                },
+                {
+                    "data_path": "action_result.data.*.*.event_id",
+                    "data_type": "string",
+                    "example_value": "bdacec35-ac89-4e4b-b23c-518c51ca6ece"
+                },
+                {
+                    "data_path": "action_result.data.*.*.mod_time",
+                    "data_type": "numeric",
+                    "example_value": 1652766298.4408
+                },
+                {
+                    "data_path": "action_result.data.*.*.create_time",
+                    "data_type": "numeric",
+                    "example_value": 1652688382.9362
+                },
+                {
+                    "data_path": "action_result.data.*.*.object_type",
+                    "data_type": "string",
+                    "example_value": "external_ticket"
+                },
+                {
+                    "data_path": "action_result.data.*.*.ticket_system",
+                    "data_type": "string",
+                    "example_value": "ServiceNow"
+                },
+                {
+                    "data_path": "action_result.data.*.*.itsi_policy_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": "Successfully retrieved the episode tickets"
                 }
             ],
             "render": {
@@ -909,6 +2638,7 @@
                 "ticket_system": {
                     "description": "Name of the ticketing system",
                     "data_type": "string",
+                    "required": true,
                     "value_list": [
                         "ServiceNow",
                         "Remedy",
@@ -920,6 +2650,7 @@
                 "ticket_id": {
                     "description": "Ticket ID in the ticketing system",
                     "data_type": "string",
+                    "required": true,
                     "order": 2
                 },
                 "ticket_url": {
@@ -994,6 +2725,13 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully added episode ticket"
                     ]
                 }
             ],
@@ -1109,6 +2847,13 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully retrieved episode events"
+                    ]
                 }
             ],
             "render": {
@@ -1218,6 +2963,20 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "bdacec35-ac89-4e4b-b23c-518c51ca6ece"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully closed the episode"
+                    ]
                 }
             ],
             "render": {
@@ -1251,6 +3010,52 @@
                     ],
                     "primary": true,
                     "order": 1
+                },
+                "status": {
+                    "description": "Episode status",
+                    "data_type": "string",
+                    "required": true,
+                    "value_list": [
+                        "Unassigned",
+                        "New",
+                        "In Progress",
+                        "Pending",
+                        "Resolved",
+                        "Closed"
+                    ],
+                    "order": 2
+                },
+                "title": {
+                    "description": "Episode title",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 3
+                },
+                "description": {
+                    "description": "Episode descripton",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 4
+                },
+                "severity": {
+                    "description": "Episode severity",
+                    "data_type": "string",
+                    "required": true,
+                    "value_list": [
+                        "Info",
+                        "Normal",
+                        "Low",
+                        "Medium",
+                        "High",
+                        "Critical"
+                    ],
+                    "order": 5
+                },
+                "owner": {
+                    "description": "Episode owner",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 6
                 }
             },
             "output": [
@@ -1271,6 +3076,36 @@
                         "splunk itsi policy id"
                     ],
                     "column_order": 1
+                },
+                {
+                    "data_path": "action_result.parameter.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 2
+                },
+                {
+                    "data_path": "action_result.parameter.title",
+                    "data_type": "string",
+                    "column_name": "Title",
+                    "column_order": 3
+                },
+                {
+                    "data_path": "action_result.parameter.description",
+                    "data_type": "string",
+                    "column_name": "Description",
+                    "column_order": 4
+                },
+                {
+                    "data_path": "action_result.parameter.severity",
+                    "data_type": "string",
+                    "column_name": "Severity",
+                    "column_order": 5
+                },
+                {
+                    "data_path": "action_result.parameter.owner",
+                    "data_type": "string",
+                    "column_name": "Owner",
+                    "column_order": 6
                 },
                 {
                     "data_path": "action_result.data",
@@ -1310,6 +3145,13 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully broke the episode"
                     ]
                 }
             ],
@@ -1396,6 +3238,66 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.user",
+                    "data_type": "string",
+                    "example_value": [
+                        "admin"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.owner",
+                    "data_type": "string",
+                    "example_value": [
+                        "nobody"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.comment",
+                    "data_type": "string",
+                    "example_value": [
+                        "sample comment"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_time",
+                    "data_type": "string",
+                    "example_value": [
+                        "1653367656.356202"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.comment_id",
+                    "data_type": "string",
+                    "example_value": [
+                        "a1e83b5e-db1c-11ec-889a-005056aa27a0"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.create_time",
+                    "data_type": "string",
+                    "example_value": [
+                        "1653367656.356202"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_policy_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary.comment_id",
+                    "data_type": "string",
+                    "example_value": [
+                        "a1e83b5e-db1c-11ec-889a-005056aa27a0"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.itsi_group_id",
+                    "data_type": "string",
+                    "example_value": [
+                        "55734286-6b2c-4cc6-b963-a22afba8c552"
                     ]
                 }
             ],
@@ -1520,6 +3422,20 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "bdacec35-ac89-4e4b-b23c-518c51ca6ece"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully updated the episode"
+                    ]
                 }
             ],
             "render": {
@@ -1594,6 +3510,112 @@
                     "example_values": [
                         1
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*._key",
+                    "data_type": "string",
+                    "example_value": [
+                        "bdacec35-ac89-4e4b-b23c-518c51ca6ece"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._user",
+                    "data_type": "string",
+                    "example_value": [
+                        "nobody"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.owner",
+                    "data_type": "string",
+                    "example_value": [
+                        "admin"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.title",
+                    "data_type": "string",
+                    "example_value": [
+                        "Sample Title"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_time",
+                    "data_type": "numeric",
+                    "example_value": [
+                        1653368270.502388
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.severity",
+                    "data_type": "string",
+                    "example_value": [
+                        "Info"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.description",
+                    "data_type": "string",
+                    "example_value": [
+                        "Sample Description"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.instruction",
+                    "data_type": "string",
+                    "example_value": [
+                        "null"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.latest_time",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.object_type",
+                    "data_type": "string",
+                    "example_value": [
+                        "notable_event_group"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.earliest_time",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_policy_id",
+                    "data_type": "string",
+                    "example_value": [
+                        "kpi_alerting_policy"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.is_partial_data",
+                    "data_type": "string",
+                    "example_value": [
+                        "1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.event_identifier_hash",
+                    "data_type": "string",
+                    "example_value": [
+                        "bdacec35-ac89-4e4b-b23c-518c51ca6ece"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary.status",
+                    "data_type": "string",
+                    "example_value": [
+                        "Successfully retrieved the episode"
+                    ]
                 }
             ],
             "render": {
@@ -1615,36 +3637,32 @@
     "pip_dependencies": {
         "wheel": [
             {
-                "module": "backports.functools_lru_cache",
-                "input_file": "wheels/backports.functools_lru_cache-1.6.4-py2.py3-none-any.whl"
-            },
-            {
                 "module": "beautifulsoup4",
-                "input_file": "wheels/beautifulsoup4-4.9.1-py2-none-any.whl"
+                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
             },
             {
                 "module": "certifi",
-                "input_file": "wheels/certifi-2021.10.8-py2.py3-none-any.whl"
+                "input_file": "wheels/py3/certifi-2022.5.18.1-py3-none-any.whl"
             },
             {
                 "module": "chardet",
-                "input_file": "wheels/chardet-3.0.4-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/chardet-3.0.4-py2.py3-none-any.whl"
             },
             {
                 "module": "idna",
-                "input_file": "wheels/idna-2.10-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/idna-2.10-py2.py3-none-any.whl"
             },
             {
                 "module": "requests",
-                "input_file": "wheels/requests-2.25.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/requests-2.25.0-py2.py3-none-any.whl"
             },
             {
                 "module": "soupsieve",
-                "input_file": "wheels/soupsieve-1.9.6-py2.py3-none-any.whl"
+                "input_file": "wheels/py3/soupsieve-2.3.2.post1-py3-none-any.whl"
             },
             {
                 "module": "urllib3",
-                "input_file": "wheels/urllib3-1.26.7-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/urllib3-1.26.9-py2.py3-none-any.whl"
             }
         ]
     }

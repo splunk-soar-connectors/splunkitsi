@@ -16,19 +16,18 @@
 #
 # Phantom sample App Connector python file
 # Phantom App imports
-import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-
-import requests
 import json
-import sys
-from bs4 import BeautifulSoup, UnicodeDammit
 import random
-from splunkitsi_consts import *
-
 # Need some time
 import time
+
+import phantom.app as phantom
+import requests
+from bs4 import BeautifulSoup
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+
+from splunkitsi_consts import *
 
 
 class RetVal(tuple):
@@ -60,21 +59,6 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         self.object_status_values = { 'Disabled': 0, 'Enabled': 1 }
         self.relative_time_values = { '15 min': '15m', '60 mins': '60m', '4 hours': '4h', '24 hours': '24h', '7 days': '7d', '30 days': '30d' }
 
-    def _unicode_string_handler(self, input_str):
-        """
-        This method returns the encoded|original string based on the Python version.
-        :param input_str: Input string to be processed
-        :return: input_str (Processed input string based on following logic 'input_str - Python 3; encoded input_str - Python 2')
-        """
-
-        try:
-            if input_str and self._python_version == 2:
-                input_str = UnicodeDammit(input_str).unicode_markup.encode('utf-8')
-        except:
-            self.debug_print("Error occurred while handling python 2to3 compatibility for the input string")
-
-        return input_str
-
     def _validate_integer(self, action_result, parameter, key):
         if parameter is not None:
             try:
@@ -82,7 +66,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
                     return action_result.set_status(phantom.APP_ERROR, VALID_INTEGER_MSG.format(key=key)), None
 
                 parameter = int(parameter)
-            except:
+            except Exception:
                 return action_result.set_status(phantom.APP_ERROR, VALID_INTEGER_MSG.format(key=key)), None
 
             if parameter < 0:
@@ -95,37 +79,23 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         :param e: Exception object
         :return: error message
         """
+        error_code = None
+        error_msg = ERROR_MSG_UNAVAILABLE
 
         try:
-            if e.args:
+            if hasattr(e, "args"):
                 if len(e.args) > 1:
                     error_code = e.args[0]
                     error_msg = e.args[1]
                 elif len(e.args) == 1:
-                    error_code = "Error code unavailable"
                     error_msg = e.args[0]
-            else:
-                error_code = ERROR_CODE_MSG
-                error_msg = ERROR_MSG_UNAVAILABLE
-        except:
-            error_code = ERROR_CODE_MSG
-            error_msg = ERROR_MSG_UNAVAILABLE
+        except Exception:
+            pass
 
-        try:
-            error_msg = self._unicode_string_handler(error_msg)
-        except TypeError:
-            error_msg = TYPE_ERR_MSG
-        except:
-            error_msg = ERROR_MSG_UNAVAILABLE
-
-        try:
-            if error_code in ERROR_CODE_MSG:
-                error_text = "Error Message: {0}".format(error_msg)
-            else:
-                error_text = "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
-        except:
-            self.debug_print("Error occurred while parsing error message")
-            error_text = PARSE_ERR_MSG
+        if not error_code:
+            error_text = "Error Message: {}".format(error_msg)
+        else:
+            error_text = "Error Code: {}. Error Message: {}".format(error_code, error_msg)
 
         return error_text
 
@@ -134,7 +104,8 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if response.status_code == 200:
             return RetVal(phantom.APP_SUCCESS, {})
 
-        return RetVal(action_result.set_status(phantom.APP_ERROR, "Status code: {0}. Empty response and no information in the header".format(response.status_code)), None)
+        return RetVal(action_result.set_status(
+            phantom.APP_ERROR, "Status code: {0}. Empty response and no information in the header".format(response.status_code)), None)
 
     def _process_html_response(self, response, action_result):
 
@@ -150,11 +121,10 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             split_lines = error_text.split('\n')
             split_lines = [x.strip() for x in split_lines if x.strip()]
             error_text = '\n'.join(split_lines)
-        except:
+        except Exception:
             error_text = "Cannot parse error details"
 
-        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code,
-                self._unicode_string_handler(error_text))
+        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
         message = message.replace('{', '{{').replace('}', '}}')
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
@@ -174,7 +144,36 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # You should process the error returned in the json
         error_message = r.text.replace('{', '{{').replace('}', '}}')
-        error_message = self._unicode_string_handler(error_message)
+        message = "Error from server. Status Code: {0} Data from server: {1}".format(
+                r.status_code, error_message)
+
+        return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
+
+    def _process_multiple_json_response(self, r, action_result):
+
+        # Try a json parse
+        try:
+            response_text = r.text.splitlines()
+        except Exception as e:
+            err = self._get_error_message_from_exception(e)
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Unable to parse the response. Error: {0}".format(err)), None)
+
+        response_list = []
+        for line in response_text:
+            try:
+                response_dict = json.loads(line)
+            except Exception as e:
+                err = self._get_error_message_from_exception(e)
+                self.debug_print("Failed to parse line {0}. Error {1}".format(line, err))
+                continue
+            response_list.append(response_dict)
+
+        # Please specify the status codes here
+        if 200 <= r.status_code < 400:
+            return RetVal(phantom.APP_SUCCESS, response_list)
+
+        # You should process the error returned in the json
+        error_message = r.text.replace('{', '{{').replace('}', '}}')
         message = "Error from server. Status Code: {0} Data from server: {1}".format(
                 r.status_code, error_message)
 
@@ -189,6 +188,10 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             action_result.add_debug_data({'r_headers': r.headers})
 
         # Process each 'Content-Type' of response separately
+
+        # Process a json response
+        if 'json' in r.headers.get('Content-Type', '') and self.get_action_identifier() == 'get_episode_events':
+            return self._process_multiple_json_response(r, action_result)
 
         # Process a json response
         if 'json' in r.headers.get('Content-Type', ''):
@@ -212,7 +215,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # everything else is actually an error at this point
         message = "Can't process response from server. Status Code: {0} Data from server: {1}".format(
-            r.status_code, self._unicode_string_handler(r.text.replace('{', '{{').replace('}', '}}')))
+            r.status_code, r.text.replace('{', '{{').replace('}', '}}'))
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _make_rest_call(self, endpoint, action_result, method="get", **kwargs):
@@ -279,25 +282,38 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Required values can be accessed directly
-        itsi_group_id = self._unicode_string_handler(param['itsi_group_id'])
+        itsi_group_id = param['itsi_group_id']
+
+        ret_val = self._check_episode_status(itsi_group_id, param, action_result, is_get_episode_action=True)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully retrieved the episode"
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _check_episode_status(self, itsi_group_id, param, action_result, is_get_episode_action=False):
 
         # make rest call
-        ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{0}'.format(itsi_group_id),
+        ret_val, response = self._make_rest_call(
+            '/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{0}'.format(itsi_group_id),
             action_result,
             method="get",
             params=None,
             headers=self._headers)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Get Episode Failed")
             return action_result.get_status()
 
-        # Add the response into the data section
-        action_result.add_data(response)
+        if not response:
+            return action_result.set_status(phantom.APP_ERROR, "Invalid itsi group id provided")
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Get Episode Passed")
+        if is_get_episode_action:
+            # Add the response into the data section
+            action_result.add_data(response)
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_update_episode(self, param):
@@ -309,8 +325,13 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
         ret_val = self._handle_update_episode_helper(param, action_result)
+
         if phantom.is_fail(ret_val):
             return action_result.get_status()
+
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully updated the episode"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_update_episode_helper(self, param, action_result):
@@ -318,12 +339,15 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Access action parameters passed in the 'param' dictionary
 
         # Required values can be accessed directly
-        itsi_group_id = self._unicode_string_handler(param['itsi_group_id'])
+        itsi_group_id = param['itsi_group_id']
 
         # Optional values should use the .get() function
         status = param.get('status', None)
         severity = param.get('severity', None)
         owner = param.get('owner', None)
+
+        if status is None and severity is None and owner is None:
+            return(action_result.set_status(phantom.APP_ERROR, "Either status or severity or owner should be provided as parameters"))
 
         # Create payload for POST request
         payload = dict()
@@ -338,7 +362,8 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         q_params = { 'is_partial_data': '1' }
 
         # make rest call
-        ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{0}'.format(itsi_group_id),
+        ret_val, response = self._make_rest_call(
+            '/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{0}'.format(itsi_group_id),
             action_result,
             method="put",
             params=q_params,
@@ -346,15 +371,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             json=payload)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Update Episode Failed")
             return action_result.get_status()
 
         # Add the response into the data section
         action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Update Episode Passed")
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_break_episode(self, param):
@@ -366,8 +387,13 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
         ret_val = self._handle_break_episode_helper(param, action_result)
+
         if phantom.is_fail(ret_val):
             return action_result.get_status()
+
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully broke the episode"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_break_episode_helper(self, param, action_result):
@@ -376,14 +402,25 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Required values can be accessed directly
         itsi_group_id = param['itsi_group_id']
         itsi_policy_id = param['itsi_policy_id']
+        status = param['status']
+        title = param['title']
+        description = param['description']
+        severity = param['severity']
+        owner = param['owner']
 
         # Create payload for POST request
-        payload = { '_key': itsi_group_id }
+        payload = {
+            '_key': itsi_group_id,
+            'status': status,
+            'title': title,
+            'description': description,
+            'severity': severity,
+            'owner': owner
+        }
 
         # Create params for POST request
         q_params = {
-            'break_group_policy_id': itsi_policy_id,
-            'is_partial_data': '1'
+            'break_group_policy_id': itsi_policy_id
         }
 
         # make rest call
@@ -395,12 +432,8 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             json=payload)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Break Episode Failed")
             return action_result.get_status()
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Break Episode Passed")
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_close_episode(self, param):
@@ -422,8 +455,6 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if (break_episode):
             ret_val = self._handle_break_episode_helper(param, action_result)
             if (phantom.is_fail(ret_val)):
-                # the call to the 3rd party device or service failed, action result should contain all the error details
-                self.save_progress("Close Episode Failed")
                 return action_result.get_status()
 
         # Set episode status to Closed and call update episode handler
@@ -432,12 +463,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         ret_val = self._handle_update_episode_helper(param, action_result)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Close Episode Failed")
             return action_result.get_status()
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Close Episode Passed")
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully closed the episode"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_add_episode_comment(self, param):
@@ -453,6 +483,12 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         itsi_group_id = param['itsi_group_id']
         comment = param['comment']
 
+        # Check if itsi group id is valid or not
+        ret_val = self._check_episode_status(itsi_group_id, param, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
         # Create payload for POST request
         payload = dict()
         payload['event_id'] = itsi_group_id
@@ -467,8 +503,6 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             json=payload)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Add Episode Comment Failed")
             return action_result.get_status()
 
         # Add the response into the data section
@@ -478,11 +512,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         summary = action_result.update_summary({ 'itsi_group_id': itsi_group_id})
         try:
             summary['comment_id'] = response['comment_id']
-        except:
+        except Exception:
             return action_result.set_status(phantom.APP_ERROR, "Error while parsing API response to get the Comment ID")
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Add Episode Comment Passed")
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_episode_events(self, param):
@@ -501,11 +533,18 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         earliest_time = param.get('earliest_time', '60 mins')
         max_results = param.get('max_results', '1')
 
+        # Check if itsi group id is valid or not
+        ret_val = self._check_episode_status(itsi_group_id, param, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
         # Create params for GET request
         earliest_time = '-' + self.relative_time_values.get(earliest_time, earliest_time)
         search_string = ('search index=itsi_grouped_alerts sourcetype=itsi_notable:group NOT source=itsi@internal@group_closing_event '
                          'itsi_group_id="' + itsi_group_id + '"'
-                         ' | eval itsi_service_ids = split(itsi_service_ids,",") | mvexpand itsi_service_ids | dedup event_id | head ' + max_results)
+                         ' | eval itsi_service_ids = split(itsi_service_ids,",") | '
+                         'mvexpand itsi_service_ids | dedup event_id | head ' + max_results)
         q_params = {
                     'search': search_string,
                     'earliest_time': earliest_time,
@@ -523,15 +562,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             headers=self._headers)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Get Episode Events Failed")
             return action_result.get_status()
 
-        # Add the response into the data section
-        action_result.add_data(response)
+        for event in response:
+            action_result.add_data(event.get('result'))
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Get Episode Events Passed")
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully retrieved episode events"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_add_episode_ticket(self, param):
@@ -545,11 +583,17 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # Required values can be accessed directly
         itsi_group_id = param['itsi_group_id']
+        ticket_system = param['ticket_system']
+        ticket_id = param['ticket_id']
 
         # Optional values should use the .get() function
-        ticket_system = param.get('ticket_system', '')
-        ticket_id = param.get('ticket_id', '')
         ticket_url = param.get('ticket_url', '')
+
+        # Check if itsi group id is valid or not
+        ret_val = self._check_episode_status(itsi_group_id, param, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
 
         # Create payload for POST request
         payload = dict()
@@ -567,15 +611,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             json=payload)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Add Episode Ticket Failed")
             return action_result.get_status()
 
         # Add the response into the data section
         action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Add Episode Ticket Passed")
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully added episode ticket"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_episode_tickets(self, param):
@@ -588,7 +631,13 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Required values can be accessed directly
-        itsi_group_id = self._unicode_string_handler(param['itsi_group_id'])
+        itsi_group_id = param['itsi_group_id']
+
+        # Check if itsi group id is valid or not
+        ret_val = self._check_episode_status(itsi_group_id, param, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
 
         # make rest call
         ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/event_management_interface/ticketing/{0}'.format(itsi_group_id),
@@ -598,15 +647,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             headers=self._headers)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Get Episode Tickets Failed")
             return action_result.get_status()
 
         # Add the response into the data section
         action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Get Episode Tickets Passed")
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully retrieved the episode tickets"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_service(self, param):
@@ -619,7 +667,20 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Required values can be accessed directly
-        itsi_service_id = self._unicode_string_handler(param['itsi_service_id'])
+        itsi_service_id = param['itsi_service_id']
+
+        # Check if itsi service id is valid or not
+        ret_val = self._check_service_status(itsi_service_id, param, action_result, is_get_service_action=True)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully retrieved the service"
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _check_service_status(self, itsi_service_id, param, action_result, is_get_service_action=False):
 
         # make rest call
         ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/itoa_interface/service/{0}'.format(itsi_service_id),
@@ -629,15 +690,12 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             headers=self._headers)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Get Service Failed")
             return action_result.get_status()
 
-        # Add the response into the data section
-        action_result.add_data(response)
+        if is_get_service_action:
+            # Add the response into the data section
+            action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Get Service Passed")
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_service_entities(self, param):
@@ -652,6 +710,12 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Required values can be accessed directly
         itsi_service_id = param['itsi_service_id']
 
+        # Check if itsi service id is valid or not
+        ret_val = self._check_service_status(itsi_service_id, param, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
         # Create params for GET request
         q_params = {'filter': json.dumps({ 'services._key': itsi_service_id })}
 
@@ -663,16 +727,13 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             headers=self._headers)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Get Service Entities Failed")
             return action_result.get_status()
 
-        # Return only the entity information
-        # Add the response into the data section
         action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Get Service Entities Passed")
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully retrieved the service entities"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_update_service_status(self, param):
@@ -685,8 +746,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Required values can be accessed directly
-        itsi_service_id = self._unicode_string_handler(param['itsi_service_id'])
+        itsi_service_id = param['itsi_service_id']
         service_status = param['service_status']
+
+        # Check if itsi service id is valid or not
+        ret_val = self._check_service_status(itsi_service_id, param, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
 
         # Create payload for POST request
         payload = dict()
@@ -704,15 +771,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             json=payload)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Update Service Status Failed")
             return action_result.get_status()
 
         # Add the response into the data section
         action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Update Service Status Passed")
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully updated the service status"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_entity(self, param):
@@ -725,7 +791,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Required values can be accessed directly
-        itsi_entity_id = self._unicode_string_handler(param['itsi_entity_id'])
+        itsi_entity_id = param['itsi_entity_id']
 
         # make rest call
         ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/itoa_interface/entity/{0}'.format(itsi_entity_id),
@@ -735,15 +801,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             headers=self._headers)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Get Entity Failed")
             return action_result.get_status()
 
         # Add the response into the data section
         action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Get Entity Passed")
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully retrieved the entity"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_get_maintenance_window(self, param):
@@ -756,25 +821,35 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Required values can be accessed directly
-        maintenance_window_id = self._unicode_string_handler(param['maintenance_window_id'])
+        maintenance_window_id = param['maintenance_window_id']
+
+        ret_val = self._check_maintenance_window_status(maintenance_window_id, param, action_result, is_get_maintenance_window_action=True)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully retrieved maintenance window"
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _check_maintenance_window_status(self, maintenance_window_id, param, action_result, is_get_maintenance_window_action=False):
 
         # make rest call
-        ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{0}'.format(maintenance_window_id),
+        ret_val, response = self._make_rest_call(
+            '/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{0}'.format(maintenance_window_id),
             action_result,
             method="get",
             params=None,
             headers=self._headers)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Get Maintenance Window Failed")
             return action_result.get_status()
 
-        # Add the response into the data section
-        action_result.add_data(response)
+        if is_get_maintenance_window_action:
+            # Add the response into the data section
+            action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Get Maintenance Window Passed")
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_add_maintenance_window(self, param):
@@ -858,15 +933,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             json=payload)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Create Maintenance Window Failed")
             return action_result.get_status()
 
         # Add the response into the data section
         action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Create Maintenance Window Passed")
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully added maintenance window"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_update_maintenance_window(self, param):
@@ -879,7 +953,12 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Required values can be accessed directly
-        maintenance_window_id = self._unicode_string_handler(param['maintenance_window_id'])
+        maintenance_window_id = param['maintenance_window_id']
+
+        ret_val = self._check_maintenance_window_status(maintenance_window_id, param, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
 
         # Optional values should use the .get() function
         title = param.get('title', None)
@@ -927,7 +1006,8 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if ((end_time is not None) and ((end_time < 0) or (end_time > 2147483647))):
             return action_result.set_status(phantom.APP_ERROR, "end_time out of range")
 
-        start_time_val = start_time if start_time is not None else (time.time() + relative_start_time if relative_start_time is not None else None)
+        start_time_val = start_time if start_time is not None else (
+            time.time() + relative_start_time if relative_start_time is not None else None)
         end_time_val = end_time if end_time is not None else (time.time() + relative_end_time if relative_end_time is not None else None)
 
         # Create payload for POST request
@@ -947,7 +1027,8 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         params = { 'is_partial_data': '1' }
 
         # make rest call
-        ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{0}'.format(maintenance_window_id),
+        ret_val, response = self._make_rest_call(
+            '/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{0}'.format(maintenance_window_id),
             action_result,
             method="put",
             params=params,
@@ -955,15 +1036,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             json=payload)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("Update Maintenance Window Failed")
             return action_result.get_status()
 
         # Add the response into the data section
         action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("Update Maintenance Window Passed")
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully updated maintenance window"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_end_maintenance_window(self, param):
@@ -976,22 +1056,25 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # Required values can be accessed directly
-        maintenance_window_id = self._unicode_string_handler(param['maintenance_window_id'])
+        maintenance_window_id = param['maintenance_window_id']
+        comment = param['comment']
 
-        # Optional values should use the .get() function
-        comment = param.get('comment', None)
+        ret_val = self._check_maintenance_window_status(maintenance_window_id, param, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
 
         # Create payload for POST request
         # end_time is now in seconds since the epoch (which mean UTC)
         payload = { 'end_time': time.time() + 1 }
-        if comment is not None:
-            payload['comment'] = comment
+        payload['comment'] = comment
 
         # Create params for POST request
         params = { 'is_partial_data': '1' }
 
         # make rest call
-        ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{0}'.format(maintenance_window_id),
+        ret_val, response = self._make_rest_call(
+            '/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{0}'.format(maintenance_window_id),
             action_result,
             method="post",
             params=params,
@@ -999,15 +1082,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             json=payload)
 
         if (phantom.is_fail(ret_val)):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            self.save_progress("End Maintenance Window Failed")
             return action_result.get_status()
 
         # Add the response into the data section
         action_result.add_data(response)
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        self.save_progress("End Maintenance Window Passed")
+        summary = action_result.update_summary({})
+        summary['status'] = "Successfully ended maintenance window"
+
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def handle_action(self, param):
@@ -1081,15 +1163,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # get the asset config
         config = self.get_config()
 
-        # Fetching the Python major version
-        try:
-            self._python_version = int(sys.version_info[0])
-        except:
-            return self.set_status(phantom.APP_ERROR, "Error occurred while getting the Phantom server's Python major version.")
-
-        self._base_url = self._unicode_string_handler(config.get('base_url'))
+        self._base_url = config.get('base_url')
         self._port = config.get('port')
-        self._username = self._unicode_string_handler(config.get('username'))
+        self._username = config.get('username')
         self._password = config.get('password')
         self._token = config.get('token')
 
@@ -1113,8 +1189,10 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
 if __name__ == '__main__':
 
-    import pudb
     import argparse
+    import sys
+
+    import pudb
 
     pudb.set_trace()
 
@@ -1129,19 +1207,20 @@ if __name__ == '__main__':
 
     username = args.username
     password = args.password
+    verify = args.verify
 
-    if (username is not None and password is None):
+    if username is not None and password is None:
 
         # User specified a username but not a password, so ask
         import getpass
         password = getpass.getpass("Password: ")
 
-    if (username and password):
+    if username and password:
         try:
             login_url = SplunkItServiceIntelligenceConnector._get_phantom_base_url() + '/login'
 
             print("Accessing the Login page")
-            r = requests.get(login_url, verify=False)
+            r = requests.get(login_url, verify=verify, timeout=60)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -1154,11 +1233,11 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url, verify=False, data=data, headers=headers, timeout=60)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: {0}".format(str(e)))
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()
@@ -1168,11 +1247,11 @@ if __name__ == '__main__':
         connector = SplunkItServiceIntelligenceConnector()
         connector.print_progress_message = True
 
-        if (session_id is not None):
+        if session_id is not None:
             in_json['user_session_token'] = session_id
             connector._set_csrf_info(csrftoken, headers['Referer'])
 
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)

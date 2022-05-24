@@ -14,7 +14,7 @@
     "utctime_updated": "2022-01-07T21:44:26.000000Z",
     "package_name": "phantom_splunkitsi",
     "main_module": "splunkitsi_connector.py",
-    "min_phantom_version": "4.8.24304",
+    "min_phantom_version": "5.2.0",
     "python_version": "3",
     "fips_compliant": true,
     "app_wizard_version": "1.0.0",
@@ -3110,14 +3110,12 @@
                 {
                     "data_path": "action_result.data",
                     "data_type": "string",
-                    "column_name": "Data",
-                    "column_order": 2
+                    "column_name": "Data"
                 },
                 {
                     "data_path": "action_result.summary",
                     "data_type": "string",
-                    "column_name": "Summary",
-                    "column_order": 3
+                    "column_name": "Summary"
                 },
                 {
                     "data_path": "action_result.status",

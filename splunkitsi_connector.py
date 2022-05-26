@@ -1,6 +1,6 @@
 # File: splunkitsi_connector.py
 #
-# Copyright (c) 2020 Splunk Inc.
+# Copyright (c) 2020-2022 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -284,7 +284,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Required values can be accessed directly
         itsi_group_id = param['itsi_group_id']
 
-        ret_val = self._check_episode_status(itsi_group_id, param, action_result, is_get_episode_action=True)
+        ret_val = self._check_episode_status(itsi_group_id, param, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -294,7 +294,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
-    def _check_episode_status(self, itsi_group_id, param, action_result, is_get_episode_action=False):
+    def _check_episode_status(self, itsi_group_id, param, action_result):
+
+        action_id = self.get_action_identifier()
 
         # make rest call
         ret_val, response = self._make_rest_call(
@@ -310,7 +312,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if not response:
             return action_result.set_status(phantom.APP_ERROR, "Invalid itsi group id provided")
 
-        if is_get_episode_action:
+        if action_id == "get_episode":
             # Add the response into the data section
             action_result.add_data(response)
 
@@ -670,7 +672,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         itsi_service_id = param['itsi_service_id']
 
         # Check if itsi service id is valid or not
-        ret_val = self._check_service_status(itsi_service_id, param, action_result, is_get_service_action=True)
+        ret_val = self._check_service_status(itsi_service_id, param, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -680,7 +682,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
-    def _check_service_status(self, itsi_service_id, param, action_result, is_get_service_action=False):
+    def _check_service_status(self, itsi_service_id, param, action_result):
+
+        action_id = self.get_action_identifier()
 
         # make rest call
         ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/itoa_interface/service/{0}'.format(itsi_service_id),
@@ -692,7 +696,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
 
-        if is_get_service_action:
+        if action_id == 'get_service':
             # Add the response into the data section
             action_result.add_data(response)
 
@@ -823,7 +827,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Required values can be accessed directly
         maintenance_window_id = param['maintenance_window_id']
 
-        ret_val = self._check_maintenance_window_status(maintenance_window_id, param, action_result, is_get_maintenance_window_action=True)
+        ret_val = self._check_maintenance_window_status(maintenance_window_id, param, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -833,7 +837,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
-    def _check_maintenance_window_status(self, maintenance_window_id, param, action_result, is_get_maintenance_window_action=False):
+    def _check_maintenance_window_status(self, maintenance_window_id, param, action_result):
+
+        action_id = self.get_action_identifier()
 
         # make rest call
         ret_val, response = self._make_rest_call(
@@ -846,9 +852,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
 
-        if is_get_maintenance_window_action:
+        if action_id == 'get_maintenance_window':
             # Add the response into the data section
             action_result.add_data(response)
+
+        if action_id == 'end_maintenance_window':
+            maintenance_window_end_time = response.get('end_time')
+            if maintenance_window_end_time and maintenance_window_end_time < time.time():
+                return(action_result.set_status(phantom.APP_ERROR, "Maintenance window is already ended"))
 
         return action_result.set_status(phantom.APP_SUCCESS)
 

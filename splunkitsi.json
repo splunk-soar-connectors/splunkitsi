@@ -414,7 +414,9 @@
                     "data_type": "string",
                     "example_values": [
                         "628c6b1dcde00363c71d6fec"
-                    ]
+                    ],
+                    "column_name": "Maintenance Window ID",
+                    "column_order": 0
                 },
                 {
                     "data_path": "action_result.summary",

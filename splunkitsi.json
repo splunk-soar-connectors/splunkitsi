@@ -415,6 +415,9 @@
                     "example_values": [
                         "628c6b1dcde00363c71d6fec"
                     ],
+                    "contains": [
+                        "splunk itsi maintenance window id"
+                    ],
                     "column_name": "Maintenance Window ID",
                     "column_order": 0
                 },

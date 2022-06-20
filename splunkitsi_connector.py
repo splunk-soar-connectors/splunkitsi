@@ -17,12 +17,12 @@
 # Phantom sample App Connector python file
 # Phantom App imports
 import json
-import random
 # Need some time
 import time
 
 import phantom.app as phantom
 import requests
+import xmltodict
 from bs4 import BeautifulSoup
 from phantom.action_result import ActionResult
 from phantom.base_connector import BaseConnector
@@ -127,6 +127,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
         message = message.replace('{', '{{').replace('}', '}}')
 
+        if len(message) > 500:
+            message = 'Error occurred while connecting to the Splunk ITSI server'
+
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
     def _process_json_response(self, r, action_result):
@@ -179,6 +182,32 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
+    def _process_xml_response(self, r, action_result):
+
+        resp_json = None
+        try:
+            if r.text:
+                resp_json = xmltodict.parse(r.text)
+        except Exception as e:
+            error_message = self._get_error_message_from_exception(e)
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Unable to parse XML response. Error: {0}".format(error_message)))
+
+        if 200 <= r.status_code < 400:
+            return RetVal(phantom.APP_SUCCESS, resp_json)
+
+        error_type = resp_json.get('response', {}).get('messages', {}).get('msg', {}).get('@type')
+        error_message = resp_json.get('response', {}).get('messages', {}).get('msg', {}).get('#text')
+
+        if error_type or error_message:
+            error = 'ErrorType: {} ErrorMessage: {}'.format(error_type, error_message)
+        else:
+            error = 'Unable to parse xml response'
+
+        message = "Error from server. Status Code: {0} Data from server: {1}".format(
+                r.status_code, error)
+
+        return RetVal(action_result.set_status(phantom.APP_ERROR, message), resp_json)
+
     def _process_response(self, r, action_result):
 
         # store the r_text in debug data, it will get dumped in the logs if the action fails
@@ -203,6 +232,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # the error and adds it to the action_result.
         if 'html' in r.headers.get('Content-Type', ''):
             return self._process_html_response(r, action_result)
+
+        if 'xml' in r.headers.get('Content-Type', ''):
+            return self._process_xml_response(r, action_result)
 
         # it's not content-type that is to be parsed, handle an empty response
         if not r.text:
@@ -924,7 +956,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         objects = [ { '_key': i, 'object_type': object_type } for i in object_id_list ]
 
         # Create payload for POST request
-        payload = { 'title': title + ' (' + str(end_time) + ':' + str(random.randint(1, 100)) + ')' }
+        payload = { 'title': title }
         payload['start_time'] = start_time_val
         payload['end_time'] = end_time_val
         if objects is not None:

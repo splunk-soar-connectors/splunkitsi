@@ -730,6 +730,8 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         if action_id == 'get_service':
             # Add the response into the data section
+            if response.get('_key'):
+                response['key'] = response.pop('_key')
             action_result.add_data(response)
 
         return action_result.set_status(phantom.APP_SUCCESS)

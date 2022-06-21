@@ -777,6 +777,11 @@
                 {
                     "data_path": "action_result.data.*.*._key",
                     "data_type": "string",
+                    "column_name": "Entity ID",
+                    "contains": [
+                        "splunk itsi entity id"
+                    ],
+                    "column_order": 3,
                     "example_values": [
                         "5b2ec957-d27c-4702-9c88-41305a5777c4"
                     ]
@@ -809,7 +814,9 @@
                     "data_type": "string",
                     "example_values": [
                         "4.11.4"
-                    ]
+                    ],
+                    "column_name": "Version",
+                    "column_order": 4
                 },
                 {
                     "data_path": "action_result.data.*.*.create_by",
@@ -830,7 +837,9 @@
                     "data_type": "string",
                     "example_values": [
                         "2022-03-25 17:15:57"
-                    ]
+                    ],
+                    "column_name": "Created Time",
+                    "column_order": 5
                 },
                 {
                     "data_path": "action_result.data.*.*.identifying_name",
@@ -851,7 +860,9 @@
                     "data_type": "string",
                     "example_values": [
                         "2022-03-25 17:15:57"
-                    ]
+                    ],
+                    "column_name": "Modified Time",
+                    "column_order": 6
                 },
                 {
                     "data_path": "action_result.data.*.*.mod_timestamp",
@@ -935,16 +946,16 @@
                     "data_type": "string",
                     "example_values": [
                         "OS Metrics"
-                    ],
-                    "column_name": "Title",
-                    "column_order": 2
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.*.title",
                     "data_type": "string",
                     "example_values": [
                         "5.3.0-83826-n1"
-                    ]
+                    ],
+                    "column_name": "Entity Title",
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.summary",
@@ -1011,11 +1022,9 @@
                 {
                     "data_path": "action_result.parameter.itsi_service_id",
                     "data_type": "string",
-                    "column_name": "Itsi Service ID",
                     "contains": [
                         "splunk itsi service id"
-                    ],
-                    "column_order": 0
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -1239,9 +1248,7 @@
                     "data_type": "string",
                     "example_values": [
                         "SHKPI-61866623-79bb-4be0-a0c6-fa549a225b1a"
-                    ],
-                    "column_name": "Key",
-                    "column_order": 1
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.kpis.*._owner",
@@ -2041,9 +2048,7 @@
                     "data_type": "string",
                     "example_values": [
                         "ServiceHealthScore"
-                    ],
-                    "column_name": "Title",
-                    "column_order": 4
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.kpis.*.trending_ad.sensitivity",
@@ -2057,9 +2062,7 @@
                     "data_type": "string",
                     "example_values": [
                         "service_health"
-                    ],
-                    "column_name": "Type",
-                    "column_order": 2
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.kpis.*.tz_offset",
@@ -2067,9 +2070,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.kpis.*.unit",
-                    "data_type": "string",
-                    "column_name": "Unit",
-                    "column_order": 3
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.kpis.*.urgency",
@@ -2201,7 +2202,10 @@
                 }
             ],
             "render": {
-                "type": "table"
+                "width": 12,
+                "height": 5,
+                "type": "custom",
+                "view": "splunkitsi_view.display_view"
             },
             "versions": "EQ(*)"
         },
@@ -2216,6 +2220,10 @@
                     "description": "Splunk ITSI entity ID",
                     "data_type": "string",
                     "required": true,
+                    "contains": [
+                        "splunk itsi entity id"
+                    ],
+                    "primary": true,
                     "order": 0
                 }
             },
@@ -2232,7 +2240,10 @@
                     "data_path": "action_result.parameter.itsi_entity_id",
                     "data_type": "string",
                     "column_name": "Itsi Entity ID",
-                    "column_order": 0
+                    "column_order": 0,
+                    "contains": [
+                        "splunk itsi entity id"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -2257,8 +2268,15 @@
                     "data_type": "string",
                     "example_values": [
                         "entity"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.entity_type_ids",
+                    "data_type": "string",
+                    "example_values": [
+                        "entity"
                     ],
-                    "column_name": "Type",
+                    "column_name": "Entity Type",
                     "column_order": 1
                 },
                 {
@@ -2294,7 +2312,9 @@
                     "data_type": "string",
                     "example_values": [
                         "2022-05-16 01:18:05"
-                    ]
+                    ],
+                    "column_name": "Created Time",
+                    "column_order": 4
                 },
                 {
                     "data_path": "action_result.data.*.description",
@@ -2322,7 +2342,9 @@
                     "data_type": "string",
                     "example_values": [
                         "2022-05-16 01:18:05"
-                    ]
+                    ],
+                    "column_name": "Modified Time",
+                    "column_order": 5
                 },
                 {
                     "data_path": "action_result.data.*.mod_timestamp",

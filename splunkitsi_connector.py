@@ -599,10 +599,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             return action_result.get_status()
 
         for event in response:
-            action_result.add_data(event.get('result'))
+            if event.get('result'):
+                action_result.add_data(event['result'])
 
         summary = action_result.update_summary({})
-        summary['status'] = "Successfully retrieved episode events"
+        summary['total_episode_events'] = action_result.get_data_size()
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -684,10 +685,15 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             return action_result.get_status()
 
         # Add the response into the data section
+        if not response:
+            return action_result.set_status(phantom.APP_SUCCESS, "No data found")
+
         action_result.add_data(response)
 
+        number_of_tickets = len(next(iter(response)).get('tickets', []))
+
         summary = action_result.update_summary({})
-        summary['status'] = "Successfully retrieved the episode tickets"
+        summary['total_episode_tickets'] = number_of_tickets
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -892,8 +898,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         if action_id == 'end_maintenance_window':
             maintenance_window_end_time = response.get('end_time')
+            maintenance_window_start_time = response.get('start_time')
             if maintenance_window_end_time and maintenance_window_end_time < time.time():
                 return(action_result.set_status(phantom.APP_ERROR, "Maintenance window is already ended"))
+            if maintenance_window_start_time and maintenance_window_start_time > time.time():
+                return(action_result.set_status(phantom.APP_ERROR, "Maintenance window is not started yet"))
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
@@ -936,6 +945,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         object_type = param.get('object_type', None)
         object_ids = param.get('object_ids', None)
+        if object_ids:
+            object_ids = [object_id.strip() for object_id in object_ids.split(",")]
+            object_ids = list(filter(None, object_ids))
+            object_ids = ", ".join(object_ids)
+
         comment = param.get('comment', None)
 
         # start_time and end_time are expected to be defined in seconds since the epoch.
@@ -1033,6 +1047,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         object_type = param.get('object_type', None)
         object_ids = param.get('object_ids', None)
+        if object_ids:
+            object_ids = [object_id.strip() for object_id in object_ids.split(",")]
+            object_ids = list(filter(None, object_ids))
+            object_ids = ", ".join(object_ids)
+
         comment = param.get('comment', None)
 
         objects = None

@@ -3465,6 +3465,9 @@
                     "example_values": [
                         "kpi_alerting_policy"
                     ],
+                    "contains": [
+                        "splunk itsi policy id"
+                    ],
                     "column_name": "ITSI Policy ID",
                     "column_order": 4
                 },

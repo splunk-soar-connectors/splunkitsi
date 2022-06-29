@@ -2492,11 +2492,9 @@
                 {
                     "data_path": "action_result.parameter.itsi_group_id",
                     "data_type": "string",
-                    "column_name": "Itsi Group ID",
                     "contains": [
                         "splunk itsi group id"
-                    ],
-                    "column_order": 0
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -2560,24 +2558,18 @@
                     "data_type": "string",
                     "example_values": [
                         "INC1234567"
-                    ],
-                    "column_name": "Ticket ID",
-                    "column_order": 1
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.*.tickets.*.ticket_system",
                     "data_type": "string",
                     "example_values": [
                         "ServiceNow"
-                    ],
-                    "column_name": "Ticket System",
-                    "column_order": 3
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.*.tickets.*.ticket_url",
-                    "data_type": "string",
-                    "column_name": "Ticket URL",
-                    "column_order": 2
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.summary",
@@ -2610,7 +2602,10 @@
                 }
             ],
             "render": {
-                "type": "table"
+                "width": 12,
+                "height": 5,
+                "type": "custom",
+                "view": "splunkitsi_view.display_view"
             },
             "versions": "EQ(*)"
         },

@@ -690,7 +690,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         action_result.add_data(response)
 
-        number_of_tickets = len(next(iter(response)).get('tickets', []))
+        number_of_tickets = 0
+        for ticket_object in response:
+            number_of_tickets += len(ticket_object.get('tickets', []))
 
         summary = action_result.update_summary({})
         summary['total_episode_tickets'] = number_of_tickets

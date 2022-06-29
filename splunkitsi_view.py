@@ -48,3 +48,6 @@ def display_view(provides, all_app_runs, context):
 
     if provides == 'get service':
         return 'splunkitsi_get_service.html'
+
+    if provides == 'get episode tickets':
+        return 'splunkitsi_get_episode_tickets.html'

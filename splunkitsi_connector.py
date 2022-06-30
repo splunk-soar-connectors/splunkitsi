@@ -942,13 +942,15 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         relative_start_time = param.get('relative_start_time', 0)
         # Integer validation for 'relative_start_time' parameter
-        ret_val, relative_start_time = self._validate_integer(action_result, relative_start_time, "'relative_start_time' action parameter")
+        ret_val, relative_start_time = self._validate_integer(action_result,
+                                                              relative_start_time, "'relative_start_time' action parameter", allow_zero=True)
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
         relative_end_time = param.get('relative_end_time', 300)
         # Integer validation for 'relative_end_time' parameter
-        ret_val, relative_end_time = self._validate_integer(action_result, relative_end_time, "'relative_end_time' action parameter")
+        ret_val, relative_end_time = self._validate_integer(action_result,
+                                                            relative_end_time, "'relative_end_time' action parameter", allow_zero=True)
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 

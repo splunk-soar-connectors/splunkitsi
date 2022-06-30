@@ -23,3 +23,4 @@ TYPE_ERR_MSG = ("Error occurred while connecting to the Splunk IT Service Intell
 
 VALID_INTEGER_MSG = "Please provide a valid integer value in the {key}"
 NON_NEGATIVE_INTEGER_MSG = "Please provide a valid non-negative integer value in the {key}"
+NON_ZERO_INTEGER_MSG = "Please provide a valid non-zero positive integer value in the {key}"

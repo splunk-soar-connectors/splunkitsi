@@ -2753,15 +2753,9 @@
                 },
                 "max_results": {
                     "description": "Max results retrieved by the search",
-                    "data_type": "string",
+                    "data_type": "numeric",
                     "required": true,
-                    "value_list": [
-                        "1",
-                        "5",
-                        "10",
-                        "25"
-                    ],
-                    "default": "1",
+                    "default": 50,
                     "order": 2
                 }
             },

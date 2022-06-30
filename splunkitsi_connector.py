@@ -59,7 +59,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         self.object_status_values = { 'Disabled': 0, 'Enabled': 1 }
         self.relative_time_values = { '15 min': '15m', '60 mins': '60m', '4 hours': '4h', '24 hours': '24h', '7 days': '7d', '30 days': '30d' }
 
-    def _validate_integer(self, action_result, parameter, key):
+    def _validate_integer(self, action_result, parameter, key, allow_zero=False):
         if parameter is not None:
             try:
                 if not float(parameter).is_integer():
@@ -71,6 +71,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
             if parameter < 0:
                 return action_result.set_status(phantom.APP_ERROR, NON_NEGATIVE_INTEGER_MSG.format(key=key)), None
+
+            if not allow_zero and parameter == 0:
+                return action_result.set_status(phantom.APP_ERROR, NON_ZERO_INTEGER_MSG.format(key=key)), None
 
         return phantom.APP_SUCCESS, parameter
 
@@ -565,7 +568,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # Optional values should use the .get() function
         earliest_time = param.get('earliest_time', '60 mins')
-        max_results = param.get('max_results', '1')
+        max_results = param.get('max_results', 50)
+
+        ret_val, max_results = self._validate_integer(action_result, max_results, "'max_results' action parameter")
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
 
         # Check if itsi group id is valid or not
         ret_val = self._check_episode_status(itsi_group_id, param, action_result)
@@ -578,7 +585,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         search_string = ('search index=itsi_grouped_alerts sourcetype=itsi_notable:group NOT source=itsi@internal@group_closing_event '
                          'itsi_group_id="' + itsi_group_id + '"'
                          ' | eval itsi_service_ids = split(itsi_service_ids,",") | '
-                         'mvexpand itsi_service_ids | dedup event_id | head ' + max_results)
+                         'mvexpand itsi_service_ids | dedup event_id | head ' + str(max_results))
         q_params = {
                     'search': search_string,
                     'earliest_time': earliest_time,

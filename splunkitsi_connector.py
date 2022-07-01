@@ -348,6 +348,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, "Invalid itsi group id provided")
 
         if action_id == "get_episode":
+            if response.get('status'):
+                for key, value in self.itsi_episode_status_values.items():
+                    if response['status'] == value:
+                        response['status'] = key
+            if response.get('severity'):
+                for key, value in self.itsi_episode_severity_values.items():
+                    if response['severity'] == value:
+                        response['severity'] = key
             # Add the response into the data section
             action_result.add_data(response)
 
@@ -386,14 +394,24 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if status is None and severity is None and owner is None:
             return(action_result.set_status(phantom.APP_ERROR, "Either status or severity or owner should be provided as parameters"))
 
+        if severity:
+            severity = self.itsi_episode_severity_values.get(severity)
+            if not severity:
+                return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the severity field"))
+
+        if status:
+            status = self.itsi_episode_status_values.get(status)
+            if not status:
+                return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the status field"))
+
         # Create payload for POST request
         payload = dict()
         if owner:
             payload['owner'] = owner
         if severity:
-            payload['severity'] = self.itsi_episode_severity_values.get(severity, '1')
+            payload['severity'] = severity
         if status:
-            payload['status'] = self.itsi_episode_status_values.get(status, '1')
+            payload['status'] = status
 
         # Create params for POST request
         q_params = { 'is_partial_data': '1' }
@@ -444,6 +462,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         description = param['description']
         severity = param['severity']
         owner = param['owner']
+
+        severity = self.itsi_episode_severity_values.get(severity)
+        if not severity:
+            return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the severity field"))
+
+        status = self.itsi_episode_status_values.get(status)
+        if not status:
+            return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the status field"))
 
         # Create payload for POST request
         payload = {

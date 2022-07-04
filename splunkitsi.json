@@ -2634,7 +2634,8 @@
                         "ServiceNow",
                         "Remedy",
                         "Phantom",
-                        "VictorOps"
+                        "VictorOps",
+                        "New Custom Ticketing System"
                     ],
                     "order": 1
                 },
@@ -2648,6 +2649,11 @@
                     "description": "Ticket URL in the ticketing system",
                     "data_type": "string",
                     "order": 3
+                },
+                "custom_ticketing_system_name": {
+                    "description": "Custom ticketing system name",
+                    "data_type": "string",
+                    "order": 4
                 }
             },
             "output": [
@@ -2678,6 +2684,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.ticket_url",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.custom_ticketing_system_name",
                     "data_type": "string"
                 },
                 {
@@ -2840,22 +2850,6 @@
                     ],
                     "primary": true,
                     "order": 0
-                },
-                "break_episode": {
-                    "description": "Break episode",
-                    "data_type": "boolean",
-                    "default": true,
-                    "order": 1
-                },
-                "itsi_policy_id": {
-                    "description": "Splunk ITSI notable event aggregation policy ID",
-                    "data_type": "string",
-                    "required": true,
-                    "contains": [
-                        "splunk itsi policy id"
-                    ],
-                    "primary": true,
-                    "order": 2
                 }
             },
             "output": [
@@ -2868,14 +2862,6 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.parameter.break_episode",
-                    "data_type": "boolean",
-                    "example_values": [
-                        true,
-                        false
-                    ]
-                },
-                {
                     "data_path": "action_result.parameter.itsi_group_id",
                     "data_type": "string",
                     "column_name": "Itsi Group ID",
@@ -2883,13 +2869,6 @@
                         "splunk itsi group id"
                     ],
                     "column_order": 0
-                },
-                {
-                    "data_path": "action_result.parameter.itsi_policy_id",
-                    "data_type": "string",
-                    "contains": [
-                        "splunk itsi policy id"
-                    ]
                 },
                 {
                     "data_path": "action_result.data",

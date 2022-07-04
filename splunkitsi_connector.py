@@ -347,7 +347,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if not response:
             return action_result.set_status(phantom.APP_ERROR, "Invalid itsi group id provided")
 
-        if action_id == "get_episode":
+        if action_id == 'get_episode':
             if response.get('status'):
                 for key, value in self.itsi_episode_status_values.items():
                     if response['status'] == value:
@@ -508,18 +508,6 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # Optional values should use the .get() function
-        break_episode = param.get('break_episode', True)
-        itsi_policy_id = param.get('itsi_policy_id', None)
-
-        if ((break_episode) and (itsi_policy_id is None)):
-            return action_result.set_status(phantom.APP_ERROR, "Missing notable event aggregation policy id")
-
-        if (break_episode):
-            ret_val = self._handle_break_episode_helper(param, action_result)
-            if (phantom.is_fail(ret_val)):
-                return action_result.get_status()
-
         # Set episode status to Closed and call update episode handler
         param['status'] = 'Closed'
 
@@ -656,6 +644,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # Optional values should use the .get() function
         ticket_url = param.get('ticket_url', '')
+        custom_ticketing_system = param.get('custom_ticketing_system_name')
+
+        if ticket_system == 'New custom ticketing system':
+            if custom_ticketing_system is None:
+                return action_result.set_status(phantom.APP_ERROR, "'New Custom Ticketing System' option is selected as a ticket "
+                                                "system, please provide a valid value in the 'custom ticketing system name' field")
+            else:
+                ticket_system = custom_ticketing_system
 
         # Check if itsi group id is valid or not
         ret_val = self._check_episode_status(itsi_group_id, param, action_result)
@@ -1090,6 +1086,13 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             object_ids = ", ".join(object_ids)
 
         comment = param.get('comment', None)
+
+        if all(value is None for value in [title, relative_start_time,
+                                           relative_end_time, start_time, end_time, object_type, object_ids, comment]):
+            return action_result.set_status(phantom.APP_ERROR, "Please provide atleast one parameter to update")
+
+        if object_type and not object_ids or object_ids and not object_type:
+            return action_result.set_status(phantom.APP_ERROR, "Object type and object ids must be provided altogether")
 
         objects = None
         # If we have objects_ids and object_type, create an objects list of dicts

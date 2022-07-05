@@ -556,6 +556,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
 
+        if 'itsi_policy_id' in response:
+            response.pop('itsi_policy_id')
+
         # Add the response into the data section
         action_result.add_data(response)
 
@@ -1357,10 +1360,15 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # that needs to be accessed across actions
         self._state = self.load_state()
 
+        if not isinstance(self._state, dict):
+            self.debug_print("Resetting the state file with the default format")
+            self._state = {}
+            return self.set_status(phantom.APP_ERROR, SPLUNKITSI_STATE_FILE_CORRUPT_ERR)
+
         # get the asset config
         config = self.get_config()
 
-        self._base_url = config.get('base_url')
+        self._base_url = config.get('base_url').rstrip("/")
         self._port = config.get('port')
         self._username = config.get('username')
         self._password = config.get('password')

@@ -649,7 +649,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if ticket_system == 'New custom ticketing system':
             if custom_ticketing_system is None:
                 return action_result.set_status(phantom.APP_ERROR, "'New Custom Ticketing System' option is selected as a ticket "
-                                                "system, please provide a valid value in the 'custom ticketing system name' field")
+                                                "system, please provide a value in the 'custom ticketing system name' field")
             else:
                 ticket_system = custom_ticketing_system
 
@@ -751,6 +751,46 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _list_services(self, action_result):
+
+        # make rest call
+        ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/itoa_interface/service',
+            action_result,
+            method="get",
+            params=None,
+            headers=self._headers)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
+        if not response:
+            return action_result.set_status(phantom.APP_ERROR, "No services found")
+
+        services_list = [service.get('_key') for service in response]
+        services_list = list(filter(None, services_list))
+
+        return action_result.set_status(phantom.APP_SUCCESS), services_list
+
+    def _list_entities(self, action_result):
+
+        # make rest call
+        ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/itoa_interface/entity',
+            action_result,
+            method="get",
+            params=None,
+            headers=self._headers)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
+        if not response:
+            return action_result.set_status(phantom.APP_ERROR, "No entities found")
+
+        entities_list = [entity.get('_key') for entity in response]
+        entities_list = list(filter(None, entities_list))
+
+        return action_result.set_status(phantom.APP_SUCCESS), entities_list
+
     def _check_service_status(self, itsi_service_id, param, action_result):
 
         action_id = self.get_action_identifier()
@@ -769,6 +809,25 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             # Add the response into the data section
             if response.get('_key'):
                 response['key'] = response.pop('_key')
+            action_result.add_data(response)
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
+    def _check_entity_status(self, itsi_entity_id, action_result):
+
+        action_id = self.get_action_identifier()
+
+        # make rest call
+        ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/itoa_interface/entity/{0}'.format(itsi_entity_id),
+            action_result,
+            method="get",
+            params=None,
+            headers=self._headers)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
+        if action_id == 'get_entity':
             action_result.add_data(response)
 
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -868,18 +927,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Required values can be accessed directly
         itsi_entity_id = param['itsi_entity_id']
 
-        # make rest call
-        ret_val, response = self._make_rest_call('/servicesNS/nobody/SA-ITOA/itoa_interface/entity/{0}'.format(itsi_entity_id),
-            action_result,
-            method="get",
-            params=None,
-            headers=self._headers)
+        # Check if itsi service id is valid or not
+        ret_val = self._check_entity_status(itsi_entity_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
-
-        # Add the response into the data section
-        action_result.add_data(response)
 
         summary = action_result.update_summary({})
         summary['status'] = "Successfully retrieved the entity"
@@ -981,7 +1033,27 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if object_ids:
             object_ids = [object_id.strip() for object_id in object_ids.split(",")]
             object_ids = list(filter(None, object_ids))
-            object_ids = ", ".join(object_ids)
+
+        invalid_object_list = []
+        if object_type == 'service':
+            ret_val, services_list = self._list_services(action_result)
+
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+            invalid_object_list = list(set(object_ids) - set(services_list))
+        elif object_type == 'entity':
+            ret_val, entities_list = self._list_entities(action_result)
+
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+            invalid_object_list = list(set(object_ids) - set(entities_list))
+        if invalid_object_list:
+            return action_result.set_status(phantom.APP_ERROR, "Please provide valid object "
+                                            "ids for selected object type. Invalid values {}".format(", ".join(invalid_object_list)))
+
+        object_ids = ", ".join(object_ids)
 
         comment = param.get('comment', None)
 
@@ -1080,19 +1152,40 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         object_type = param.get('object_type', None)
         object_ids = param.get('object_ids', None)
-        if object_ids:
-            object_ids = [object_id.strip() for object_id in object_ids.split(",")]
-            object_ids = list(filter(None, object_ids))
-            object_ids = ", ".join(object_ids)
-
         comment = param.get('comment', None)
 
         if all(value is None for value in [title, relative_start_time,
                                            relative_end_time, start_time, end_time, object_type, object_ids, comment]):
-            return action_result.set_status(phantom.APP_ERROR, "Please provide atleast one parameter to update")
+            return action_result.set_status(phantom.APP_ERROR, "Please provide at least one parameter to update")
 
         if object_type and not object_ids or object_ids and not object_type:
             return action_result.set_status(phantom.APP_ERROR, "Object type and object ids must be provided altogether")
+
+        if object_ids:
+            object_ids = [object_id.strip() for object_id in object_ids.split(",")]
+            object_ids = list(filter(None, object_ids))
+
+        if object_type and object_ids:
+            invalid_object_list = []
+            if object_type == 'service':
+                ret_val, services_list = self._list_services(action_result)
+
+                if phantom.is_fail(ret_val):
+                    return action_result.get_status()
+
+                invalid_object_list = list(set(object_ids) - set(services_list))
+            elif object_type == 'entity':
+                ret_val, entities_list = self._list_entities(action_result)
+
+                if phantom.is_fail(ret_val):
+                    return action_result.get_status()
+
+                invalid_object_list = list(set(object_ids) - set(entities_list))
+            if invalid_object_list:
+                return action_result.set_status(phantom.APP_ERROR, "Please provide valid object "
+                                                "ids for selected object type. Invalid values {}".format(", ".join(invalid_object_list)))
+
+            object_ids = ", ".join(object_ids)
 
         objects = None
         # If we have objects_ids and object_type, create an objects list of dicts

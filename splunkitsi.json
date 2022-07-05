@@ -151,6 +151,7 @@
         {
             "action": "update maintenance window",
             "description": "Update Splunk ITSI maintenance window",
+            "verbose": "If 'start time' and 'relative start time' both will be provided, the 'start time' will be given priority. Same as if 'end time' and 'relative end time' both will be provided, the 'end time' will be given priority.",
             "type": "generic",
             "identifier": "update_maintenance_window",
             "read_only": false,
@@ -309,6 +310,7 @@
         {
             "action": "add maintenance window",
             "description": "Add Splunk ITSI maintenance window",
+            "verbose": "If 'start time' and 'relative start time' both will be provided, the 'start time' will be given priority. Same as if 'end time' and 'relative end time' both will be provided, the 'end time' will be given priority.",
             "type": "generic",
             "identifier": "add_maintenance_window",
             "read_only": false,

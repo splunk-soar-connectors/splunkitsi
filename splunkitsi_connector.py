@@ -608,6 +608,10 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
+        if earliest_time and earliest_time not in SPLUNKITSI_EVENT_TIME_RANGE:
+            return action_result.set_status(phantom.APP_ERROR, "Invalid earliest time provided. "
+                                            "Must be one of: {}.".format(", ".join(SPLUNKITSI_EVENT_TIME_RANGE)))
+
         # Check if itsi group id is valid or not
         ret_val = self._check_episode_status(itsi_group_id, action_result)
 
@@ -665,6 +669,10 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Optional values should use the .get() function
         ticket_url = param.get('ticket_url', '')
         custom_ticketing_system = param.get('custom_ticketing_system_name')
+
+        if ticket_system and ticket_system not in SPLUNKITSI_TICKET_SYSTEMS:
+            return action_result.set_status(phantom.APP_ERROR, "Invalid ticket system provided. "
+                                            "Must be one of: {}.".format(", ".join(SPLUNKITSI_TICKET_SYSTEMS)))
 
         if ticket_system == 'New custom ticketing system':
             if custom_ticketing_system is None:

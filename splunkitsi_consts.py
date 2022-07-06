@@ -28,3 +28,5 @@ SPLUNKITSI_STATE_FILE_CORRUPT_ERR = (
     "Error occurred while loading the state file due to its unexpected format. "
     "Resetting the state file with the default format. Please try again."
 )
+SPLUNKITSI_TICKET_SYSTEMS = ["ServiceNow", "Remedy", "Phantom", "VictorOps", "New Custom Ticketing System"]
+SPLUNKITSI_EVENT_TIME_RANGE = ["15 min", "60 mins", "4 hours", "24 hours", "7 days", "30 days"]

@@ -997,6 +997,7 @@
         {
             "action": "get service",
             "description": "Get Splunk ITSI service information",
+            "verbose": "The KPI count in the output table will always be created KPIs + 1 (inbuilt ServiceHealthScore KPI).",
             "type": "investigate",
             "identifier": "get_service",
             "read_only": true,

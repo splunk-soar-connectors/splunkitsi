@@ -319,7 +319,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Required values can be accessed directly
         itsi_group_id = param['itsi_group_id']
 
-        ret_val = self._check_episode_status(itsi_group_id, param, action_result)
+        ret_val = self._check_episode_status(itsi_group_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -329,7 +329,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
-    def _check_episode_status(self, itsi_group_id, param, action_result):
+    def _check_episode_status(self, itsi_group_id, action_result):
 
         action_id = self.get_action_identifier()
 
@@ -343,6 +343,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
+
+        if isinstance(response, list):
+            response = list(filter(None, response))
 
         if not response:
             return action_result.set_status(phantom.APP_ERROR, "Invalid itsi group id provided")
@@ -359,7 +362,10 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             # Add the response into the data section
             action_result.add_data(response)
 
-        return action_result.set_status(phantom.APP_SUCCESS)
+        if action_id == 'break_episode':
+            return action_result.set_status(phantom.APP_SUCCESS), response
+        else:
+            return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_update_episode(self, param):
 
@@ -471,6 +477,17 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if not status:
             return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the status field"))
 
+        # Check if itsi group id is valid or not
+        ret_val, response = self._check_episode_status(itsi_group_id, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
+        episode_policy_id = response.get('itsi_policy_id')
+
+        if episode_policy_id and itsi_policy_id != episode_policy_id:
+            return action_result.set_status(phantom.APP_ERROR, "Please provide valid ITSI policy id")
+
         # Create payload for POST request
         payload = {
             '_key': itsi_group_id,
@@ -535,7 +552,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         comment = param['comment']
 
         # Check if itsi group id is valid or not
-        ret_val = self._check_episode_status(itsi_group_id, param, action_result)
+        ret_val = self._check_episode_status(itsi_group_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -592,7 +609,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             return action_result.get_status()
 
         # Check if itsi group id is valid or not
-        ret_val = self._check_episode_status(itsi_group_id, param, action_result)
+        ret_val = self._check_episode_status(itsi_group_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -657,7 +674,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
                 ticket_system = custom_ticketing_system
 
         # Check if itsi group id is valid or not
-        ret_val = self._check_episode_status(itsi_group_id, param, action_result)
+        ret_val = self._check_episode_status(itsi_group_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -701,7 +718,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         itsi_group_id = param['itsi_group_id']
 
         # Check if itsi group id is valid or not
-        ret_val = self._check_episode_status(itsi_group_id, param, action_result)
+        ret_val = self._check_episode_status(itsi_group_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()

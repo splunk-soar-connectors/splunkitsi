@@ -319,7 +319,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Required values can be accessed directly
         itsi_group_id = param['itsi_group_id']
 
-        ret_val = self._check_episode_status(itsi_group_id, action_result)
+        ret_val, _ = self._check_episode_status(itsi_group_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -342,13 +342,13 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             headers=self._headers)
 
         if (phantom.is_fail(ret_val)):
-            return action_result.get_status()
+            return action_result.get_status(), None
 
         if isinstance(response, list):
             response = list(filter(None, response))
 
         if not response:
-            return action_result.set_status(phantom.APP_ERROR, "Invalid itsi group id provided")
+            return action_result.set_status(phantom.APP_ERROR, "Invalid itsi group id provided"), None
 
         if action_id == 'get_episode':
             if response.get('status'):
@@ -362,10 +362,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             # Add the response into the data section
             action_result.add_data(response)
 
-        if action_id in ['break_episode', 'close_episode']:
-            return action_result.set_status(phantom.APP_SUCCESS), response
-        else:
-            return action_result.set_status(phantom.APP_SUCCESS)
+        return action_result.set_status(phantom.APP_SUCCESS), response
 
     def _handle_update_episode(self, param):
 
@@ -565,7 +562,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         comment = param['comment']
 
         # Check if itsi group id is valid or not
-        ret_val = self._check_episode_status(itsi_group_id, action_result)
+        ret_val, _ = self._check_episode_status(itsi_group_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -626,7 +623,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
                                             "Must be one of: {}.".format(", ".join(SPLUNKITSI_EVENT_TIME_RANGE)))
 
         # Check if itsi group id is valid or not
-        ret_val = self._check_episode_status(itsi_group_id, action_result)
+        ret_val, _ = self._check_episode_status(itsi_group_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -695,7 +692,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
                 ticket_system = custom_ticketing_system
 
         # Check if itsi group id is valid or not
-        ret_val = self._check_episode_status(itsi_group_id, action_result)
+        ret_val, _ = self._check_episode_status(itsi_group_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -739,7 +736,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         itsi_group_id = param['itsi_group_id']
 
         # Check if itsi group id is valid or not
-        ret_val = self._check_episode_status(itsi_group_id, action_result)
+        ret_val, _ = self._check_episode_status(itsi_group_id, action_result)
 
         if (phantom.is_fail(ret_val)):
             return action_result.get_status()
@@ -802,10 +799,10 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             headers=self._headers)
 
         if (phantom.is_fail(ret_val)):
-            return action_result.get_status()
+            return action_result.get_status(), None
 
         if not response:
-            return action_result.set_status(phantom.APP_ERROR, "No services found")
+            return action_result.set_status(phantom.APP_ERROR, "No services found"), None
 
         services_list = [service.get('_key') for service in response]
         services_list = list(filter(None, services_list))
@@ -822,10 +819,10 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             headers=self._headers)
 
         if (phantom.is_fail(ret_val)):
-            return action_result.get_status()
+            return action_result.get_status(), None
 
         if not response:
-            return action_result.set_status(phantom.APP_ERROR, "No entities found")
+            return action_result.set_status(phantom.APP_ERROR, "No entities found"), None
 
         entities_list = [entity.get('_key') for entity in response]
         entities_list = list(filter(None, entities_list))
@@ -1092,7 +1089,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             invalid_object_list = list(set(object_ids) - set(entities_list))
         if invalid_object_list:
             return action_result.set_status(phantom.APP_ERROR, "Please provide valid object "
-                                            "ids for selected object type. Invalid values {}".format(", ".join(invalid_object_list)))
+                                            "ids for selected object type. Invalid values {}.".format(", ".join(invalid_object_list)))
 
         object_ids = ", ".join(object_ids)
 
@@ -1106,8 +1103,9 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if ((end_time is not None) and ((end_time < 0) or (end_time > 2147483647))):
             return action_result.set_status(phantom.APP_ERROR, "end_time out of range")
 
-        start_time_val = start_time if start_time is not None else time.time() + relative_start_time
-        end_time_val = end_time if end_time is not None else time.time() + relative_end_time
+        current_epoch_time = time.time()
+        start_time_val = start_time if start_time is not None else current_epoch_time + relative_start_time
+        end_time_val = end_time if end_time is not None else current_epoch_time + relative_end_time
 
         objects = None
         # object_type and object_ids are mandatory.
@@ -1224,7 +1222,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
                 invalid_object_list = list(set(object_ids) - set(entities_list))
             if invalid_object_list:
                 return action_result.set_status(phantom.APP_ERROR, "Please provide valid object "
-                                                "ids for selected object type. Invalid values {}".format(", ".join(invalid_object_list)))
+                                                "ids for selected object type. Invalid values {}.".format(", ".join(invalid_object_list)))
 
             object_ids = ", ".join(object_ids)
 
@@ -1244,9 +1242,10 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if ((end_time is not None) and ((end_time < 0) or (end_time > 2147483647))):
             return action_result.set_status(phantom.APP_ERROR, "end_time out of range")
 
+        current_epoch_time = time.time()
         start_time_val = start_time if start_time is not None else (
-            time.time() + relative_start_time if relative_start_time is not None else None)
-        end_time_val = end_time if end_time is not None else (time.time() + relative_end_time if relative_end_time is not None else None)
+            current_epoch_time + relative_start_time if relative_start_time is not None else None)
+        end_time_val = end_time if end_time is not None else (current_epoch_time + relative_end_time if relative_end_time is not None else None)
 
         # Create payload for POST request
         payload = dict()

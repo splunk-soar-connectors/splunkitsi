@@ -362,7 +362,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             # Add the response into the data section
             action_result.add_data(response)
 
-        if action_id == 'break_episode':
+        if action_id in ['break_episode', 'close_episode']:
             return action_result.set_status(phantom.APP_SUCCESS), response
         else:
             return action_result.set_status(phantom.APP_SUCCESS)
@@ -525,8 +525,21 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
+        itsi_group_id = param['itsi_group_id']
+
         # Set episode status to Closed and call update episode handler
         param['status'] = 'Closed'
+
+        # Check if itsi group id is valid or not
+        ret_val, response = self._check_episode_status(itsi_group_id, action_result)
+
+        if (phantom.is_fail(ret_val)):
+            return action_result.get_status()
+
+        episode_status = response.get('status')
+
+        if episode_status and episode_status == "5":
+            return action_result.set_status(phantom.APP_ERROR, "Episode is already closed")
 
         ret_val = self._handle_update_episode_helper(param, action_result)
 
@@ -674,7 +687,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, "Invalid ticket system provided. "
                                             "Must be one of: {}.".format(", ".join(SPLUNKITSI_TICKET_SYSTEMS)))
 
-        if ticket_system == 'New custom ticketing system':
+        if ticket_system == 'New Custom Ticketing System':
             if custom_ticketing_system is None:
                 return action_result.set_status(phantom.APP_ERROR, "'New Custom Ticketing System' option is selected as a ticket "
                                                 "system, please provide a value in the 'custom ticketing system name' field")

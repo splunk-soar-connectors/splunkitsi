@@ -272,6 +272,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
                 url,
                 auth=self._auth,
                 verify=config.get('verify_server_cert', False),
+                timeout=60,
                 **kwargs)
         except requests.exceptions.ConnectionError:
             error_message = 'Error Details: Connection Refused from the Server'
@@ -1459,10 +1460,10 @@ if __name__ == '__main__':
 
     if username and password:
         try:
-            login_url = SplunkItServiceIntelligenceConnector._get_phantom_base_url() + '/login'
+            login_url = BaseConnector._get_phantom_base_url() + "login"
 
             print("Accessing the Login page")
-            r = requests.get(login_url, verify=verify, timeout=60)
+            r = requests.get(login_url, verify=verify, timeout=30)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -1475,7 +1476,7 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=verify, data=data, headers=headers, timeout=60)
+            r2 = requests.post(login_url, verify=verify, data=data, headers=headers, timeout=30)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: {0}".format(str(e)))

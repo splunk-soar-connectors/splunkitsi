@@ -17,6 +17,9 @@
     "min_phantom_version": "5.2.0",
     "python_version": "3",
     "fips_compliant": true,
+    "latest_tested_versions": [
+        "On-premise, Cloud v4.13.0"
+    ],
     "app_wizard_version": "1.0.0",
     "configuration": {
         "base_url": {
@@ -91,7 +94,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.comment",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Ending this maintenance window"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.maintenance_window_id",
@@ -100,7 +106,10 @@
                     "contains": [
                         "splunk itsi maintenance window id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "62c55c75b113cf77ae59a918"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -126,7 +135,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully ended maintenance window"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -222,11 +234,17 @@
                 },
                 {
                     "data_path": "action_result.parameter.comment",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Entity added"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.end_time",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        1657172907
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.maintenance_window_id",
@@ -235,31 +253,52 @@
                     "contains": [
                         "splunk itsi maintenance window id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "62c55c75b113cf77ae59a918"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.object_ids",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "bbb723f2-9eb0-4075-90f6-b09f6ad42bbe,f3cf7759-60a8-47f6-8d90-c530eaf0549b"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.object_type",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "entity"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.relative_end_time",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        300
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.relative_start_time",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.start_time",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        1654580895
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.title",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Updated-Maintenance-Window07-06-2022 09:57"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -285,7 +324,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully updated maintenance window"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -377,35 +419,59 @@
                 },
                 {
                     "data_path": "action_result.parameter.comment",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Service added"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.end_time",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        1657172907
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.object_ids",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "bbb723f2-9eb0-4075-90f6-b09f6ad42bbe,f3cf7759-60a8-47f6-8d90-c530eaf0549b"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.object_type",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "service"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.relative_end_time",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        300
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.relative_start_time",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        10
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.start_time",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        1654580895
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.title",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "New-maintenance-window07-06-2022 09:57"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -436,7 +502,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully added maintenance window"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -492,7 +561,10 @@
                     "contains": [
                         "splunk itsi maintenance window id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "62c55c75b113cf77ae59a918"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -619,7 +691,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully retrieved maintenance window"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -686,11 +761,17 @@
                     "contains": [
                         "splunk itsi service id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "bbb723f2-9eb0-4075-90f6-b09f6ad42bbe"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.service_status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Disabled"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -716,7 +797,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully updated the service status"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -772,7 +856,10 @@
                     "contains": [
                         "splunk itsi service id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "bbb723f2-9eb0-4075-90f6-b09f6ad42bbe"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -842,6 +929,13 @@
                     ],
                     "column_name": "Created Time",
                     "column_order": 4
+                },
+                {
+                    "data_path": "action_result.data.*.*.description",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test-Entity"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.*.identifying_name",
@@ -972,7 +1066,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully retrieved the service entities"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -1027,6 +1124,9 @@
                     "data_type": "string",
                     "contains": [
                         "splunk itsi service id"
+                    ],
+                    "example_values": [
+                        "bbb723f2-9eb0-4075-90f6-b09f6ad42bbe"
                     ]
                 },
                 {
@@ -1176,6 +1276,13 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.backfill_enabled",
+                    "data_type": "boolean",
+                    "example_values": [
+                        true
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.base_service_template_id",
                     "data_type": "string"
                 },
@@ -1247,6 +1354,13 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.key",
+                    "data_type": "string",
+                    "example_values": [
+                        "bbb723f2-9eb0-4075-90f6-b09f6ad42bbe"
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.kpis.*._key",
                     "data_type": "string",
                     "example_values": [
@@ -1259,6 +1373,10 @@
                     "example_values": [
                         "nobody"
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.active_custom_threshold_window",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.data.*.kpis.*.adaptive_thresholding_training_window",
@@ -1476,6 +1594,13 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.kpis.*.appName",
+                    "data_type": "string",
+                    "example_values": [
+                        "DA-ITSI-WEBSERVER"
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.kpis.*.backfill_earliest_time",
                     "data_type": "string",
                     "example_values": [
@@ -1494,6 +1619,20 @@
                     "data_type": "string",
                     "example_values": [
                         "`get_full_itsi_summary_service_health_events(61866623-79bb-4be0-a0c6-fa549a225b1a)`"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.base_search_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "DA-ITSI-WEBSERVER_Activity"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.base_search_metric",
+                    "data_type": "string",
+                    "example_values": [
+                        "4xx_status"
                     ]
                 },
                 {
@@ -1527,6 +1666,13 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.kpis.*.datamodel_filter_clauses",
+                    "data_type": "string",
+                    "example_values": [
+                        " (Activity.status>=400 AND Activity.status<500)"
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.kpis.*.description",
                     "data_type": "string"
                 },
@@ -1535,6 +1681,13 @@
                     "data_type": "numeric",
                     "example_values": [
                         1
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.entity_alias_filtering_fields",
+                    "data_type": "string",
+                    "example_values": [
+                        "web_server"
                     ]
                 },
                 {
@@ -1676,6 +1829,13 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.kpis.*.eventstatop",
+                    "data_type": "string",
+                    "example_values": [
+                        "avg"
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.kpis.*.fill_gaps",
                     "data_type": "string",
                     "example_values": [
@@ -1684,9 +1844,9 @@
                 },
                 {
                     "data_path": "action_result.data.*.kpis.*.gap_custom_alert_value",
-                    "data_type": "numeric",
+                    "data_type": "string",
                     "example_values": [
-                        0
+                        "0"
                     ]
                 },
                 {
@@ -1749,6 +1909,10 @@
                 },
                 {
                     "data_path": "action_result.data.*.kpis.*.metric.metric_name",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.metric_qualifier",
                     "data_type": "string"
                 },
                 {
@@ -1831,6 +1995,13 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.kpis.*.sec_grp",
+                    "data_type": "string",
+                    "example_values": [
+                        "default_itsi_security_group"
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.kpis.*.service_id",
                     "data_type": "string",
                     "example_values": [
@@ -1851,6 +2022,13 @@
                 {
                     "data_path": "action_result.data.*.kpis.*.target",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.target_field",
+                    "data_type": "string",
+                    "example_values": [
+                        "cpu_load_percent"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.kpis.*.threshold_eval",
@@ -1952,6 +2130,48 @@
                     "data_type": "string"
                 },
                 {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.thresholdLevels.*.dynamicParam",
+                    "data_type": "numeric",
+                    "example_values": [
+                        0.5
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.thresholdLevels.*.severityColor",
+                    "data_type": "string",
+                    "example_values": [
+                        "#99D18B"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.thresholdLevels.*.severityColorLight",
+                    "data_type": "string",
+                    "example_values": [
+                        "#DCEFD7"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.thresholdLevels.*.severityLabel",
+                    "data_type": "string",
+                    "example_values": [
+                        "normal"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.thresholdLevels.*.severityValue",
+                    "data_type": "numeric",
+                    "example_values": [
+                        2
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.aggregate_thresholds.thresholdLevels.*.thresholdValue",
+                    "data_type": "numeric",
+                    "example_values": [
+                        25
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.policies.default_policy.entity_thresholds.baseSeverityColor",
                     "data_type": "string",
                     "example_values": [
@@ -2047,6 +2267,20 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.time_blocks.*.policy_key",
+                    "data_type": "string",
+                    "example_values": [
+                        "default_policy"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpis.*.time_variate_thresholds_specification.time_blocks.*.time_block_key",
+                    "data_type": "string",
+                    "example_values": [
+                        "00-00"
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.kpis.*.title",
                     "data_type": "string",
                     "example_values": [
@@ -2087,6 +2321,13 @@
                     "data_type": "string",
                     "example_values": [
                         "REST"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_time",
+                    "data_type": "string",
+                    "example_values": [
+                        "2019-10-11 12:38:48"
                     ]
                 },
                 {
@@ -2187,7 +2428,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully retrieved the service"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -2246,6 +2490,9 @@
                     "column_order": 0,
                     "contains": [
                         "splunk itsi entity id"
+                    ],
+                    "example_values": [
+                        "0ffc868b-b6f3-4f89-af66-d5253c7985af"
                     ]
                 },
                 {
@@ -2272,15 +2519,6 @@
                     "example_values": [
                         "entity"
                     ]
-                },
-                {
-                    "data_path": "action_result.data.*.entity_type_ids",
-                    "data_type": "string",
-                    "example_values": [
-                        "entity"
-                    ],
-                    "column_name": "Entity Type",
-                    "column_order": 1
                 },
                 {
                     "data_path": "action_result.data.*._user",
@@ -2325,6 +2563,15 @@
                     "example_values": [
                         "sample description"
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*.entity_type_ids",
+                    "data_type": "string",
+                    "example_values": [
+                        "entity"
+                    ],
+                    "column_name": "Entity Type",
+                    "column_order": 1
                 },
                 {
                     "data_path": "action_result.data.*.identifying_name",
@@ -2422,6 +2669,20 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.data.*.services.*._key",
+                    "data_type": "string",
+                    "example_values": [
+                        "092fedd7-fc3e-445f-a22d-615b445adb2a"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.services.*.title",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test update"
+                    ]
+                },
+                {
                     "data_path": "action_result.data.*.title",
                     "data_type": "string",
                     "example_values": [
@@ -2443,7 +2704,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully retrieved the entity"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -2497,6 +2761,9 @@
                     "data_type": "string",
                     "contains": [
                         "splunk itsi group id"
+                    ],
+                    "example_values": [
+                        "c9df1f62-0a6c-4330-88f1-fd70f6ae760f"
                     ]
                 },
                 {
@@ -2586,8 +2853,18 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.summary.total_episode_tickets",
+                    "data_type": "numeric",
+                    "example_values": [
+                        4
+                    ]
+                },
+                {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Total episode tickets: 5"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -2669,29 +2946,44 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.parameter.custom_ticketing_system_name",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test"
+                    ]
+                },
+                {
                     "data_path": "action_result.parameter.itsi_group_id",
                     "data_type": "string",
                     "column_name": "Itsi Group ID",
                     "contains": [
                         "splunk itsi group id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "c9df1f62-0a6c-4330-88f1-fd70f6ae760f"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.ticket_id",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "test-123456"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.ticket_system",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "ServiceNow"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.ticket_url",
-                    "data_type": "string"
-                },
-                {
-                    "data_path": "action_result.parameter.custom_ticketing_system_name",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "https://xyz.net/browse/test-123456"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -2710,7 +3002,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully added episode ticket"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -2783,7 +3078,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.earliest_time",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "30 days"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.itsi_group_id",
@@ -2792,15 +3090,429 @@
                     "contains": [
                         "splunk itsi group id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "c9df1f62-0a6c-4330-88f1-fd70f6ae760f"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.max_results",
-                    "data_type": "numeric"
+                    "data_type": "numeric",
+                    "example_values": [
+                        25
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
                     "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*._bkt",
+                    "data_type": "string",
+                    "example_values": [
+                        "itsi_grouped_alerts~93~A14C1E05-6B79-4C6C-A1EF-846384B42561"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._cd",
+                    "data_type": "string",
+                    "example_values": [
+                        "93:22390432"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._indextime",
+                    "data_type": "string",
+                    "example_values": [
+                        "1656407654"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._mkv_child",
+                    "data_type": "string",
+                    "example_values": [
+                        "0"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._raw",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*._serial",
+                    "data_type": "string",
+                    "example_values": [
+                        "0"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._sourcetype",
+                    "data_type": "string",
+                    "example_values": [
+                        "itsi_notable:group"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._subsecond",
+                    "data_type": "string",
+                    "example_values": [
+                        ".254"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*._time",
+                    "data_type": "string",
+                    "example_values": [
+                        "2022-06-28 02:13:13.254 PDT"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.alert_type",
+                    "data_type": "string",
+                    "example_values": [
+                        "KPI alert"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.all_service_kpi_ids",
+                    "data_type": "string",
+                    "example_values": [
+                        "61866623-79bb-4be0-a0c6-fa549a225b1a:a596837d45fc4493bedebe14"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.description",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test App - System Health App Run Failures severity changed from medium to low"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.drilldown_search_earliest_offset",
+                    "data_type": "string",
+                    "example_values": [
+                        "-302400"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.drilldown_search_latest_offset",
+                    "data_type": "string",
+                    "example_values": [
+                        "302400"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.drilldown_search_search",
+                    "data_type": "string",
+                    "example_values": [
+                        "`itsi_event_management_index_with_close_events` kpiid=a596837d45fc4493bedebe14 indexed_is_service_aggregate::1 "
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.drilldown_search_title",
+                    "data_type": "string",
+                    "example_values": [
+                        "KPI severity change alert in last 5 minutes"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.event_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "897f28c2-f6c2-11ec-9e3e-005056aa27a0"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.event_identifier_fields",
+                    "data_type": "string",
+                    "example_values": [
+                        "source, title, description"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.event_identifier_hash",
+                    "data_type": "string",
+                    "example_values": [
+                        "a440d2ce3019858bfd8b42d6acd63f8e3b842155ae0a35c711d45f3879d2fe8d"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.event_identifier_string",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.host",
+                    "data_type": "string",
+                    "example_values": [
+                        "127.0.0.1:8088"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.index",
+                    "data_type": "string",
+                    "example_values": [
+                        "itsi_grouped_alerts"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsiAlert",
+                    "data_type": "string",
+                    "example_values": [
+                        "KPI alert"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsiInstance",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test App - System Health App Run Failures"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsiSeverity",
+                    "data_type": "string",
+                    "example_values": [
+                        "low"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsiSubInstance",
+                    "data_type": "string",
+                    "example_values": [
+                        "Severity change from medium to low"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_action_rule_keys",
+                    "data_type": "string",
+                    "example_values": [
+                        "null"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_earliest_event_time",
+                    "data_type": "string",
+                    "example_values": [
+                        "1656403992.65"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_first_event_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "275eb7b4-f6ba-11ec-aa2f-005056aa27a0"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_first_event_time",
+                    "data_type": "string",
+                    "example_values": [
+                        "1656403992.651"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_group_assignee",
+                    "data_type": "string",
+                    "example_values": [
+                        "unassigned"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_group_count",
+                    "data_type": "string",
+                    "example_values": [
+                        "5"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_group_description",
+                    "data_type": "string",
+                    "example_values": [
+                        "Grouped alerts from service Test App - System Health; most recent alert from KPI App Run Failures"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_group_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "c9df1f62-0a6c-4330-88f1-fd70f6ae760f"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_group_instruction",
+                    "data_type": "string",
+                    "example_values": [
+                        "%itsi_instruction%"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_group_severity",
+                    "data_type": "string",
+                    "example_values": [
+                        "3"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_group_status",
+                    "data_type": "string",
+                    "example_values": [
+                        "1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_group_title",
+                    "data_type": "string",
+                    "example_values": [
+                        "KPI Alerts from Service: Test App - System Health"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_is_first_event",
+                    "data_type": "string",
+                    "example_values": [
+                        "false"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_is_last_event",
+                    "data_type": "string",
+                    "example_values": [
+                        "true"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_last_event_time",
+                    "data_type": "string",
+                    "example_values": [
+                        "1656407593.254"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_parent_group_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "a02c77bd-3c26-4597-b515-ef512499caa2"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_policy_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "kpi_alerting_policy"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_service_ids",
+                    "data_type": "string",
+                    "example_values": [
+                        "61866623-79bb-4be0-a0c6-fa549a225b1a"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.itsi_split_by_hash",
+                    "data_type": "string",
+                    "example_values": [
+                        "service_ids:61866623-79bb-4be0-a0c6-fa549a225b1a:"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpi_title",
+                    "data_type": "string",
+                    "example_values": [
+                        "App Run Failures"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.kpiid",
+                    "data_type": "string",
+                    "example_values": [
+                        "a596837d45fc4493bedebe14"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.linecount",
+                    "data_type": "string",
+                    "example_values": [
+                        "1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.mod_time",
+                    "data_type": "string",
+                    "example_values": [
+                        "1656407593.2543497"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.orig_raw",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.orig_time",
+                    "data_type": "string",
+                    "example_values": [
+                        "1656407593.2543497"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.owner",
+                    "data_type": "string",
+                    "example_values": [
+                        "unassigned"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.punct",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.service_title",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test App - System Health"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.severity",
+                    "data_type": "string",
+                    "example_values": [
+                        "3"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.source",
+                    "data_type": "string",
+                    "example_values": [
+                        "KPIAlert"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.sourcetype",
+                    "data_type": "string",
+                    "example_values": [
+                        "itsi_notable:group"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.splunk_server",
+                    "data_type": "string",
+                    "example_values": [
+                        "10.1.16.206"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "1"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.title",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test App - System Health App Run Failures is low"
+                    ]
                 },
                 {
                     "data_path": "action_result.summary",
@@ -2814,8 +3526,18 @@
                     ]
                 },
                 {
+                    "data_path": "action_result.summary.total_episode_events",
+                    "data_type": "numeric",
+                    "example_values": [
+                        5
+                    ]
+                },
+                {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Total episode events: 5"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -2871,7 +3593,10 @@
                     "contains": [
                         "splunk itsi group id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "c9df1f62-0a6c-4330-88f1-fd70f6ae760f"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -2897,7 +3622,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully closed the episode"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -3004,7 +3732,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.description",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Break-Episode07-07-2022 07:38"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.itsi_group_id",
@@ -3013,30 +3744,48 @@
                     "contains": [
                         "splunk itsi group id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "c9df1f62-0a6c-4330-88f1-fd70f6ae760f"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.itsi_policy_id",
                     "data_type": "string",
                     "contains": [
                         "splunk itsi policy id"
+                    ],
+                    "example_values": [
+                        "kpi_alerting_policy"
                     ]
                 },
                 {
                     "data_path": "action_result.parameter.owner",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "admin"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.severity",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "High"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Resolved"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.title",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Break-Episode07-07-2022 07:38"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -3055,7 +3804,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully broke the episode"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -3112,7 +3864,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.comment",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Demo - Comment"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.itsi_group_id",
@@ -3121,7 +3876,10 @@
                     "contains": [
                         "splunk itsi group id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "c9df1f62-0a6c-4330-88f1-fd70f6ae760f"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -3197,7 +3955,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Itsi group id: c9df1f62-0a6c-4330-88f1-fd70f6ae760f, Comment id: c5a168cc-fdc7-11ec-b449-005056aa27a0"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -3284,19 +4045,31 @@
                     "contains": [
                         "splunk itsi group id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "c9df1f62-0a6c-4330-88f1-fd70f6ae760f"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.owner",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "admin"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.severity",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Medium"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.status",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "In Progress"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -3322,7 +4095,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully updated the episode"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -3378,7 +4154,10 @@
                     "contains": [
                         "splunk itsi group id"
                     ],
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "c9df1f62-0a6c-4330-88f1-fd70f6ae760f"
+                    ]
                 },
                 {
                     "data_path": "action_result.data",
@@ -3439,7 +4218,7 @@
                     "contains": [
                         "splunk itsi policy id"
                     ],
-                    "column_name": "ITSI Policy ID",
+                    "column_name": "Itsi Policy ID",
                     "column_order": 4
                 },
                 {
@@ -3507,7 +4286,10 @@
                 },
                 {
                     "data_path": "action_result.message",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Status: Successfully retrieved the episode"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",

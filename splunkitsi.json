@@ -3238,7 +3238,10 @@
                 },
                 {
                     "data_path": "action_result.data.*.event_identifier_string",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "KPIAlert - Test title"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.host",
@@ -3445,7 +3448,10 @@
                 },
                 {
                     "data_path": "action_result.data.*.orig_raw",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "06-28-2022 09:13:13 KPI alert - Title, alert_level=3, alert_severity=low, all_service_kpi_ids=61866623-79bb-4be0-a0c6-fa549a225b1a:a596837d45fc4493bedebe14"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.orig_time",

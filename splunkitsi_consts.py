@@ -31,6 +31,6 @@ SPLUNKITSI_STATE_FILE_CORRUPT_ERR = (
     "Resetting the state file with the default format. Please try again."
 )
 
-# Value list constant
+# Value list constants
 SPLUNKITSI_TICKET_SYSTEMS = ["ServiceNow", "Remedy", "Phantom", "VictorOps", "New Custom Ticketing System"]
 SPLUNKITSI_EVENT_TIME_RANGE = ["15 min", "60 mins", "4 hours", "24 hours", "7 days", "30 days"]

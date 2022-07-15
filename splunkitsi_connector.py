@@ -14,8 +14,6 @@
 # and limitations under the License.
 #
 #
-# Phantom sample App Connector python file
-# Phantom App imports
 import json
 # Need some time
 import time
@@ -52,12 +50,6 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         self._password = None
         self._port = None
         self._token = None
-
-        # Define dictionary constants
-        self.itsi_episode_severity_values = { 'Info': '1', 'Normal': '2', 'Low': '3', 'Medium': '4', 'High': '5', 'Critical': '6' }
-        self.itsi_episode_status_values = { 'Unassigned': '0', 'New': '1', 'In Progress': '2', 'Pending': '3', 'Resolved': '4', 'Closed': '5' }
-        self.object_status_values = { 'Disabled': 0, 'Enabled': 1 }
-        self.relative_time_values = { '15 min': '15m', '60 mins': '60m', '4 hours': '4h', '24 hours': '24h', '7 days': '7d', '30 days': '30d' }
 
     def _validate_integer(self, action_result, parameter, key, allow_zero=False):
         if parameter is not None:
@@ -272,7 +264,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
                 url,
                 auth=self._auth,
                 verify=config.get('verify_server_cert', False),
-                timeout=60,
+                timeout=SPLUNKITSI_DEFAULT_REQUEST_TIMEOUT,
                 **kwargs)
         except requests.exceptions.ConnectionError:
             error_message = 'Error Details: Connection Refused from the Server'
@@ -353,11 +345,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         if action_id == 'get_episode':
             if response.get('status'):
-                for key, value in self.itsi_episode_status_values.items():
+                for key, value in ITSI_EPISODE_STATUS_VALUES.items():
                     if response['status'] == value:
                         response['status'] = key
             if response.get('severity'):
-                for key, value in self.itsi_episode_severity_values.items():
+                for key, value in ITSI_EPISODE_SEVERITY_VALUES.items():
                     if response['severity'] == value:
                         response['severity'] = key
             # Add the response into the data section
@@ -396,17 +388,17 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         owner = param.get('owner', None)
 
         if status is None and severity is None and owner is None:
-            return(action_result.set_status(phantom.APP_ERROR, "Either status or severity or owner should be provided as parameters"))
+            return(action_result.set_status(phantom.APP_ERROR, "Either 'status' or 'severity' or 'owner' should be provided as parameters"))
 
         if severity:
-            severity = self.itsi_episode_severity_values.get(severity)
+            severity = ITSI_EPISODE_SEVERITY_VALUES.get(severity)
             if not severity:
-                return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the severity field"))
+                return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the 'severity' field"))
 
         if status:
-            status = self.itsi_episode_status_values.get(status)
+            status = ITSI_EPISODE_STATUS_VALUES.get(status)
             if not status:
-                return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the status field"))
+                return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the 'status' field"))
 
         # Create payload for POST request
         payload = dict()
@@ -467,13 +459,13 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         severity = param['severity']
         owner = param['owner']
 
-        severity = self.itsi_episode_severity_values.get(severity)
+        severity = ITSI_EPISODE_SEVERITY_VALUES.get(severity)
         if not severity:
-            return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the severity field"))
+            return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the 'severity' field"))
 
-        status = self.itsi_episode_status_values.get(status)
+        status = ITSI_EPISODE_STATUS_VALUES.get(status)
         if not status:
-            return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the status field"))
+            return(action_result.set_status(phantom.APP_ERROR, "Please provide a valid value in the 'status' field"))
 
         # Check if itsi group id is valid or not
         ret_val, response = self._check_episode_status(itsi_group_id, action_result)
@@ -536,7 +528,8 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         episode_status = response.get('status')
 
-        if episode_status and episode_status == "5":
+        # If the status is returned from the API as "5", then the episode is already closed
+        if episode_status and episode_status == ITSI_EPISODE_STATUS_VALUES['Closed']:
             return action_result.set_status(phantom.APP_ERROR, "Episode is already closed")
 
         ret_val = self._handle_update_episode_helper(param, action_result)
@@ -630,7 +623,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             return action_result.get_status()
 
         # Create params for GET request
-        earliest_time = '-' + self.relative_time_values.get(earliest_time, earliest_time)
+        earliest_time = '-' + RELATIVE_TIME_VALUES.get(earliest_time, earliest_time)
         search_string = ('search index=itsi_grouped_alerts sourcetype=itsi_notable:group NOT source=itsi@internal@group_closing_event '
                          'itsi_group_id="' + itsi_group_id + '"'
                          ' | eval itsi_service_ids = split(itsi_service_ids,",") | '
@@ -930,7 +923,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # Create payload for POST request
         payload = dict()
-        payload['enabled'] = self.object_status_values.get(service_status, 1)
+        payload['enabled'] = OBJECT_STATUS_VALUES.get(service_status, 1)
 
         # Create params for POST request
         params = { 'is_partial_data': '1' }
@@ -1463,7 +1456,7 @@ if __name__ == '__main__':
             login_url = BaseConnector._get_phantom_base_url() + "login"
 
             print("Accessing the Login page")
-            r = requests.get(login_url, verify=verify, timeout=30)
+            r = requests.get(login_url, verify=verify, timeout=SPLUNKITSI_DEFAULT_REQUEST_TIMEOUT)
             csrftoken = r.cookies['csrftoken']
 
             data = dict()
@@ -1476,7 +1469,7 @@ if __name__ == '__main__':
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=verify, data=data, headers=headers, timeout=30)
+            r2 = requests.post(login_url, verify=verify, data=data, headers=headers, timeout=SPLUNKITSI_DEFAULT_REQUEST_TIMEOUT)
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: {0}".format(str(e)))

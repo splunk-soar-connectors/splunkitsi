@@ -1066,6 +1066,8 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             object_ids = [object_id.strip() for object_id in object_ids.split(",")]
             object_ids = list(filter(None, object_ids))
 
+        # TODO
+        # The logic of filtering invalid object ids can be removed once this bug is fixed ITSI-24907
         invalid_object_list = []
         if object_type == 'service':
             ret_val, services_list = self._list_services(action_result)
@@ -1198,6 +1200,8 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             object_ids = [object_id.strip() for object_id in object_ids.split(",")]
             object_ids = list(filter(None, object_ids))
 
+        # TODO
+        # The logic of filtering invalid object ids can be removed once this bug is fixed ITSI-24907
         if object_type and object_ids:
             invalid_object_list = []
             if object_type == 'service':

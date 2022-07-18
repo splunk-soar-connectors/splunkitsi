@@ -2571,7 +2571,7 @@
                         "entity"
                     ],
                     "column_name": "Entity Type",
-                    "column_order": 1
+                    "column_order": 2
                 },
                 {
                     "data_path": "action_result.data.*.identifying_name",
@@ -2689,7 +2689,7 @@
                         "Sample Title"
                     ],
                     "column_name": "Title",
-                    "column_order": 2
+                    "column_order": 1
                 },
                 {
                     "data_path": "action_result.summary",
@@ -2892,6 +2892,7 @@
         {
             "action": "add episode ticket",
             "description": "Add a ticket to a Splunk ITSI episode",
+            "verbose": "Include http:// or https:// in the 'ticket url' action parameter. Otherwise the URL is interpreted as a relative URI.",
             "type": "generic",
             "identifier": "add_episode_ticket",
             "read_only": false,

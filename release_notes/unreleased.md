@@ -1,5 +1,1 @@
 **Unreleased**
-* Compatibility changes for Python 3 support [PAPP-25677]
-* Renamed 'Splunk IT Service Intelligence' app to 'Splunk IT Service Intelligence for SOAR' [PAPP-24795]
-* Minor enhancements and fixes
- 

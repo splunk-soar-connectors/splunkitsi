@@ -1,6 +1,6 @@
 # File: splunkitsi_connector.py
 #
-# Copyright (c) 2020-2022 Splunk Inc.
+# Copyright (c) 2020-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,17 +55,17 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if parameter is not None:
             try:
                 if not float(parameter).is_integer():
-                    return action_result.set_status(phantom.APP_ERROR, VALID_INTEGER_MSG.format(key=key)), None
+                    return action_result.set_status(phantom.APP_ERROR, VALID_INTEGER_MESSAGE.format(key=key)), None
 
                 parameter = int(parameter)
             except Exception:
-                return action_result.set_status(phantom.APP_ERROR, VALID_INTEGER_MSG.format(key=key)), None
+                return action_result.set_status(phantom.APP_ERROR, VALID_INTEGER_MESSAGE.format(key=key)), None
 
             if parameter < 0:
-                return action_result.set_status(phantom.APP_ERROR, NON_NEGATIVE_INTEGER_MSG.format(key=key)), None
+                return action_result.set_status(phantom.APP_ERROR, NON_NEGATIVE_INTEGER_MESSAGE.format(key=key)), None
 
             if not allow_zero and parameter == 0:
-                return action_result.set_status(phantom.APP_ERROR, NON_ZERO_INTEGER_MSG.format(key=key)), None
+                return action_result.set_status(phantom.APP_ERROR, NON_ZERO_INTEGER_MESSAGE.format(key=key)), None
 
         return phantom.APP_SUCCESS, parameter
 
@@ -75,7 +75,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         :return: error message
         """
         error_code = None
-        error_msg = ERROR_MSG_UNAVAILABLE
+        error_msg = ERROR_MESSAGE_UNAVAILABLE
 
         try:
             if hasattr(e, "args"):

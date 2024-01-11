@@ -1,6 +1,6 @@
 # File: splunkitsi_consts.py
 #
-# Copyright (c) 2020-2022 Splunk Inc.
+# Copyright (c) 2020-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
 # Define your constants here
 
 # Error constants
-ERROR_CODE_MSG = "Error code unavailable"
-ERROR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
-PARSE_ERR_MSG = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
-TYPE_ERR_MSG = ("Error occurred while connecting to the Splunk IT Service Intelligence Server. "
+ERROR_CODE_MESSAGE = "Error code unavailable"
+ERROR_MESSAGE_UNAVAILABLE = "Error message unavailable. Please check the asset configuration and|or action parameters"
+PARSE_ERROR_MESSAGE = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
+TYPE_ERROR_MESSAGE = ("Error occurred while connecting to the Splunk IT Service Intelligence Server. "
                 "Please check the asset configuration and|or the action parameters")
 
-VALID_INTEGER_MSG = "Please provide a valid integer value in the {key}"
-NON_NEGATIVE_INTEGER_MSG = "Please provide a valid non-negative integer value in the {key}"
-NON_ZERO_INTEGER_MSG = "Please provide a valid non-zero positive integer value in the {key}"
+VALID_INTEGER_MESSAGE = "Please provide a valid integer value in the {key}"
+NON_NEGATIVE_INTEGER_MESSAGE = "Please provide a valid non-negative integer value in the {key}"
+NON_ZERO_INTEGER_MESSAGE = "Please provide a valid non-zero positive integer value in the {key}"
 SPLUNKITSI_STATE_FILE_CORRUPT_ERR = (
     "Error occurred while loading the state file due to its unexpected format. "
     "Resetting the state file with the default format. Please try again."

@@ -26,7 +26,7 @@ TYPE_ERROR_MESSAGE = ("Error occurred while connecting to the Splunk IT Service 
 VALID_INTEGER_MESSAGE = "Please provide a valid integer value in the {key}"
 NON_NEGATIVE_INTEGER_MESSAGE = "Please provide a valid non-negative integer value in the {key}"
 NON_ZERO_INTEGER_MESSAGE = "Please provide a valid non-zero positive integer value in the {key}"
-SPLUNKITSI_STATE_FILE_CORRUPT_ERR = (
+SPLUNKITSI_STATE_FILE_CORRUPT_ERROR = (
     "Error occurred while loading the state file due to its unexpected format. "
     "Resetting the state file with the default format. Please try again."
 )

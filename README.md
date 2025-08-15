@@ -1,9 +1,9 @@
 # Splunk IT Service Intelligence for SOAR
 
-Publisher: Splunk \
-Connector Version: 2.0.1 \
-Product Vendor: Splunk \
-Product Name: Splunk ITSI \
+Publisher: Splunk <br>
+Connector Version: 2.0.1 <br>
+Product Vendor: Splunk <br>
+Product Name: Splunk ITSI <br>
 Minimum Product Version: 5.2.0
 
 This app integrates with Splunk IT Service Intelligence to provide operations on Splunk IT Service Intelligence episodes, services, entities, and object maintenance
@@ -58,29 +58,29 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[end maintenance window](#action-end-maintenance-window) - End Splunk ITSI maintenance window \
-[update maintenance window](#action-update-maintenance-window) - Update Splunk ITSI maintenance window \
-[add maintenance window](#action-add-maintenance-window) - Add Splunk ITSI maintenance window \
-[get maintenance window](#action-get-maintenance-window) - Get Splunk ITSI maintenance window information \
-[update service status](#action-update-service-status) - Update Splunk ITSI service status \
-[get service entities](#action-get-service-entities) - Get entities of a Splunk ITSI service \
-[get service](#action-get-service) - Get Splunk ITSI service information \
-[get entity](#action-get-entity) - Get Splunk ITSI entity information \
-[get episode tickets](#action-get-episode-tickets) - Get ticket information for a Splunk ITSI episode \
-[add episode ticket](#action-add-episode-ticket) - Add a ticket to a Splunk ITSI episode \
-[get episode events](#action-get-episode-events) - Get latest events for Splunk ITSI episode \
-[close episode](#action-close-episode) - Close a Splunk ITSI episode \
-[break episode](#action-break-episode) - Break a Splunk ITSI episode \
-[add episode comment](#action-add-episode-comment) - Add a comment to a Splunk ITSI episode \
-[update episode](#action-update-episode) - Update Splunk ITSI episode status, severity and owner \
-[get episode](#action-get-episode) - Get Splunk ITSI episode information \
+[end maintenance window](#action-end-maintenance-window) - End Splunk ITSI maintenance window <br>
+[update maintenance window](#action-update-maintenance-window) - Update Splunk ITSI maintenance window <br>
+[add maintenance window](#action-add-maintenance-window) - Add Splunk ITSI maintenance window <br>
+[get maintenance window](#action-get-maintenance-window) - Get Splunk ITSI maintenance window information <br>
+[update service status](#action-update-service-status) - Update Splunk ITSI service status <br>
+[get service entities](#action-get-service-entities) - Get entities of a Splunk ITSI service <br>
+[get service](#action-get-service) - Get Splunk ITSI service information <br>
+[get entity](#action-get-entity) - Get Splunk ITSI entity information <br>
+[get episode tickets](#action-get-episode-tickets) - Get ticket information for a Splunk ITSI episode <br>
+[add episode ticket](#action-add-episode-ticket) - Add a ticket to a Splunk ITSI episode <br>
+[get episode events](#action-get-episode-events) - Get latest events for Splunk ITSI episode <br>
+[close episode](#action-close-episode) - Close a Splunk ITSI episode <br>
+[break episode](#action-break-episode) - Break a Splunk ITSI episode <br>
+[add episode comment](#action-add-episode-comment) - Add a comment to a Splunk ITSI episode <br>
+[update episode](#action-update-episode) - Update Splunk ITSI episode status, severity and owner <br>
+[get episode](#action-get-episode) - Get Splunk ITSI episode information <br>
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration
 
 ## action: 'end maintenance window'
 
 End Splunk ITSI maintenance window
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -109,7 +109,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Update Splunk ITSI maintenance window
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 If 'start time' and 'relative start time' both will be provided, the 'start time' will be given priority. Same as if 'end time' and 'relative end time' both will be provided, the 'end time' will be given priority.
@@ -154,7 +154,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Add Splunk ITSI maintenance window
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 If 'start time' and 'relative start time' both will be provided, the 'start time' will be given priority. Same as if 'end time' and 'relative end time' both will be provided, the 'end time' will be given priority.
@@ -197,7 +197,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get Splunk ITSI maintenance window information
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -237,7 +237,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Update Splunk ITSI service status
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -266,7 +266,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get entities of a Splunk ITSI service
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -317,7 +317,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get Splunk ITSI service information
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 The KPI count in the output table will always be created KPIs + 1 (inbuilt ServiceHealthScore KPI).
@@ -544,7 +544,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get Splunk ITSI entity information
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -596,7 +596,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get ticket information for a Splunk ITSI episode
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -634,7 +634,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Add a ticket to a Splunk ITSI episode
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 Include http:// or https:// in the 'ticket url' action parameter. Otherwise the URL is interpreted as a relative URI.
@@ -670,7 +670,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get latest events for Splunk ITSI episode
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -761,7 +761,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Close a Splunk ITSI episode
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -788,7 +788,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Break a Splunk ITSI episode
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -826,7 +826,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Add a comment to a Splunk ITSI episode
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -862,7 +862,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Update Splunk ITSI episode status, severity and owner
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -895,7 +895,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Get Splunk ITSI episode information
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -936,7 +936,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters

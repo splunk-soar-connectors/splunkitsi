@@ -15,7 +15,7 @@
     "package_name": "phantom_splunkitsi",
     "main_module": "splunkitsi_connector.py",
     "min_phantom_version": "5.2.0",
-    "python_version": "3",
+    "python_version": "3.9, 3.13",
     "fips_compliant": true,
     "latest_tested_versions": [
         "On-premise, Cloud v4.13.0"
@@ -4346,19 +4346,9 @@
         ]
     },
     "pip39_dependencies": {
-        "wheel": [
-            {
-                "module": "beautifulsoup4",
-                "input_file": "wheels/py3/beautifulsoup4-4.9.1-py3-none-any.whl"
-            },
-            {
-                "module": "soupsieve",
-                "input_file": "wheels/py3/soupsieve-2.5-py3-none-any.whl"
-            },
-            {
-                "module": "xmltodict",
-                "input_file": "wheels/shared/xmltodict-0.13.0-py2.py3-none-any.whl"
-            }
-        ]
+        "wheel": []
+    },
+    "pip313_dependencies": {
+        "wheel": []
     }
 }

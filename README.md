@@ -1,7 +1,7 @@
 # Splunk IT Service Intelligence for SOAR
 
 Publisher: Splunk <br>
-Connector Version: 2.0.1 <br>
+Connector Version: 2.0.2 <br>
 Product Vendor: Splunk <br>
 Product Name: Splunk ITSI <br>
 Minimum Product Version: 5.2.0

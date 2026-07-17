@@ -15,10 +15,8 @@
 #
 #
 import json
-from urllib.parse import quote
-
-# Need some time
 import time
+from urllib.parse import quote
 
 import phantom.app as phantom
 import requests
@@ -841,7 +839,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/itoa_interface/entity/{self._quote_url_path_component(itsi_entity_id)}", action_result, method="get", params=None, headers=self._headers
+            f"/servicesNS/nobody/SA-ITOA/itoa_interface/entity/{self._quote_url_path_component(itsi_entity_id)}",
+            action_result,
+            method="get",
+            params=None,
+            headers=self._headers,
         )
 
         if phantom.is_fail(ret_val):

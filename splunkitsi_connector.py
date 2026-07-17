@@ -15,6 +15,7 @@
 #
 #
 import json
+from urllib.parse import quote
 
 # Need some time
 import time
@@ -49,6 +50,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         self._password = None
         self._port = None
         self._token = None
+
+    @staticmethod
+    def _quote_url_path_component(value):
+        return quote(str(value), safe="")
+
+    @staticmethod
+    def _escape_spl_string_literal(value):
+        return str(value).replace("\\", "\\\\").replace('"', '\\"')
 
     def _validate_integer(self, action_result, parameter, key, allow_zero=False):
         if parameter is not None:
@@ -314,7 +323,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{itsi_group_id}",
+            f"/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{self._quote_url_path_component(itsi_group_id)}",
             action_result,
             method="get",
             params=None,
@@ -400,7 +409,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{itsi_group_id}",
+            f"/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{self._quote_url_path_component(itsi_group_id)}",
             action_result,
             method="put",
             params=q_params,
@@ -605,7 +614,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         earliest_time = "-" + RELATIVE_TIME_VALUES.get(earliest_time, earliest_time)
         search_string = (
             "search index=itsi_grouped_alerts sourcetype=itsi_notable:group NOT source=itsi@internal@group_closing_event "
-            'itsi_group_id="' + itsi_group_id + '"'
+            'itsi_group_id="' + self._escape_spl_string_literal(itsi_group_id) + '"'
             ' | eval itsi_service_ids = split(itsi_service_ids,",") | '
             "mvexpand itsi_service_ids | dedup event_id | head " + str(max_results)
         )
@@ -720,7 +729,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/event_management_interface/ticketing/{itsi_group_id}",
+            f"/servicesNS/nobody/SA-ITOA/event_management_interface/ticketing/{self._quote_url_path_component(itsi_group_id)}",
             action_result,
             method="get",
             params=None,
@@ -806,7 +815,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/itoa_interface/service/{itsi_service_id}",
+            f"/servicesNS/nobody/SA-ITOA/itoa_interface/service/{self._quote_url_path_component(itsi_service_id)}",
             action_result,
             method="get",
             params=None,
@@ -829,7 +838,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/itoa_interface/entity/{itsi_entity_id}", action_result, method="get", params=None, headers=self._headers
+            f"/servicesNS/nobody/SA-ITOA/itoa_interface/entity/{self._quote_url_path_component(itsi_entity_id)}", action_result, method="get", params=None, headers=self._headers
         )
 
         if phantom.is_fail(ret_val):
@@ -902,7 +911,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/itoa_interface/service/{itsi_service_id}",
+            f"/servicesNS/nobody/SA-ITOA/itoa_interface/service/{self._quote_url_path_component(itsi_service_id)}",
             action_result,
             method="put",
             params=params,
@@ -969,7 +978,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{maintenance_window_id}",
+            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{self._quote_url_path_component(maintenance_window_id)}",
             action_result,
             method="get",
             params=None,
@@ -1243,7 +1252,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{maintenance_window_id}",
+            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{self._quote_url_path_component(maintenance_window_id)}",
             action_result,
             method="put",
             params=params,
@@ -1289,7 +1298,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{maintenance_window_id}",
+            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{self._quote_url_path_component(maintenance_window_id)}",
             action_result,
             method="post",
             params=params,

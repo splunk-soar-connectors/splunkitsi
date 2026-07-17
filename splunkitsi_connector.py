@@ -184,8 +184,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
     def _process_xml_response(self, r, action_result):
         resp_json = None
         try:
-            if r.text:
-                resp_json = xmltodict.parse(r.text)
+            xml_content = r.content
+            if b"<!DOCTYPE" in xml_content.upper():
+                return RetVal(action_result.set_status(phantom.APP_ERROR, "XML response contains a DTD, refusing to parse"))
+            if xml_content:
+                resp_json = xmltodict.parse(xml_content)
         except Exception as e:
             error_message = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, f"Unable to parse XML response. Error: {error_message}"))

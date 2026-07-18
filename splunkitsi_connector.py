@@ -1,6 +1,6 @@
 # File: splunkitsi_connector.py
 #
-# Copyright (c) 2020-2025 Splunk Inc.
+# Copyright (c) 2020-2026 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -285,7 +285,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         self.save_progress("Connecting to endpoint")
         # make rest call
-        ret_val, response = self._make_rest_call(
+        ret_val, _response = self._make_rest_call(
             "/servicesNS/nobody/SA-ITOA/itoa_interface/get_supported_object_types/", action_result, params=None, headers=self._headers
         )
 

@@ -12,7 +12,7 @@
 {% block widget_content %}
   <!-- Main Start Block -->
   <!-- File: splunkitsi_get_service.html
-  Copyright (c) 2020-2025 Splunk Inc.
+  Copyright (c) 2020-2026 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -126,7 +126,7 @@ and limitations under the License.
                     {% if data.key %}
                       <a class="no-word-wrap"
                          href="javascript:;"
-                            onclick="context_menu(this, [{'contains': ['splunk itsi service id'], 'value':'{{ data.key|escapejs }}' }], 0, {{ container.id }}, null, false);">
+                         onclick="context_menu(this, [{'contains': ['splunk itsi service id'], 'value':'{{ data.key|escapejs }}' }], 0, {{ container.id }}, null, false);">
                         {{ data.key }}
                         &nbsp;
                         <span class="fa fa-caret-down" style="font-size: smaller;"></span>

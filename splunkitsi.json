@@ -9,7 +9,7 @@
     "product_name": "Splunk ITSI",
     "product_version_regex": ".*",
     "publisher": "Splunk",
-    "license": "Copyright (c) 2020-2025 Splunk Inc.",
+    "license": "Copyright (c) 2020-2026 Splunk Inc.",
     "app_version": "2.0.2",
     "utctime_updated": "2025-09-08T22:10:47.716888Z",
     "package_name": "phantom_splunkitsi",

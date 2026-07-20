@@ -1,6 +1,6 @@
 # File: splunkitsi_connector.py
 #
-# Copyright (c) 2020-2025 Splunk Inc.
+# Copyright (c) 2020-2026 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,9 +15,8 @@
 #
 #
 import json
-
-# Need some time
 import time
+from urllib.parse import quote
 
 import phantom.app as phantom
 import requests
@@ -49,6 +48,14 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         self._password = None
         self._port = None
         self._token = None
+
+    @staticmethod
+    def _quote_url_path_component(value):
+        return quote(str(value), safe="")
+
+    @staticmethod
+    def _escape_spl_string_literal(value):
+        return str(value).replace("\\", "\\\\").replace('"', '\\"')
 
     def _validate_integer(self, action_result, parameter, key, allow_zero=False):
         if parameter is not None:
@@ -175,8 +182,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
     def _process_xml_response(self, r, action_result):
         resp_json = None
         try:
-            if r.text:
-                resp_json = xmltodict.parse(r.text)
+            xml_content = r.content
+            if b"<!DOCTYPE" in xml_content.upper():
+                return RetVal(action_result.set_status(phantom.APP_ERROR, "XML response contains a DTD, refusing to parse"))
+            if xml_content:
+                resp_json = xmltodict.parse(xml_content)
         except Exception as e:
             error_message = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, f"Unable to parse XML response. Error: {error_message}"))
@@ -275,7 +285,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         self.save_progress("Connecting to endpoint")
         # make rest call
-        ret_val, response = self._make_rest_call(
+        ret_val, _response = self._make_rest_call(
             "/servicesNS/nobody/SA-ITOA/itoa_interface/get_supported_object_types/", action_result, params=None, headers=self._headers
         )
 
@@ -314,7 +324,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{itsi_group_id}",
+            f"/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{self._quote_url_path_component(itsi_group_id)}",
             action_result,
             method="get",
             params=None,
@@ -400,7 +410,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{itsi_group_id}",
+            f"/servicesNS/nobody/SA-ITOA/event_management_interface/notable_event_group/{self._quote_url_path_component(itsi_group_id)}",
             action_result,
             method="put",
             params=q_params,
@@ -605,7 +615,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         earliest_time = "-" + RELATIVE_TIME_VALUES.get(earliest_time, earliest_time)
         search_string = (
             "search index=itsi_grouped_alerts sourcetype=itsi_notable:group NOT source=itsi@internal@group_closing_event "
-            'itsi_group_id="' + itsi_group_id + '"'
+            'itsi_group_id="' + self._escape_spl_string_literal(itsi_group_id) + '"'
             ' | eval itsi_service_ids = split(itsi_service_ids,",") | '
             "mvexpand itsi_service_ids | dedup event_id | head " + str(max_results)
         )
@@ -720,7 +730,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/event_management_interface/ticketing/{itsi_group_id}",
+            f"/servicesNS/nobody/SA-ITOA/event_management_interface/ticketing/{self._quote_url_path_component(itsi_group_id)}",
             action_result,
             method="get",
             params=None,
@@ -806,7 +816,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/itoa_interface/service/{itsi_service_id}",
+            f"/servicesNS/nobody/SA-ITOA/itoa_interface/service/{self._quote_url_path_component(itsi_service_id)}",
             action_result,
             method="get",
             params=None,
@@ -829,7 +839,11 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/itoa_interface/entity/{itsi_entity_id}", action_result, method="get", params=None, headers=self._headers
+            f"/servicesNS/nobody/SA-ITOA/itoa_interface/entity/{self._quote_url_path_component(itsi_entity_id)}",
+            action_result,
+            method="get",
+            params=None,
+            headers=self._headers,
         )
 
         if phantom.is_fail(ret_val):
@@ -902,7 +916,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/itoa_interface/service/{itsi_service_id}",
+            f"/servicesNS/nobody/SA-ITOA/itoa_interface/service/{self._quote_url_path_component(itsi_service_id)}",
             action_result,
             method="put",
             params=params,
@@ -969,7 +983,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{maintenance_window_id}",
+            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{self._quote_url_path_component(maintenance_window_id)}",
             action_result,
             method="get",
             params=None,
@@ -1243,7 +1257,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{maintenance_window_id}",
+            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{self._quote_url_path_component(maintenance_window_id)}",
             action_result,
             method="put",
             params=params,
@@ -1289,7 +1303,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{maintenance_window_id}",
+            f"/servicesNS/nobody/SA-ITOA/maintenance_services_interface/maintenance_calendar/{self._quote_url_path_component(maintenance_window_id)}",
             action_result,
             method="post",
             params=params,

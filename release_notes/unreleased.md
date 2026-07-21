@@ -1,4 +1,1 @@
 **Unreleased**
-
-* Reject unrecognized service-status values instead of enabling the service.
-* Report failed or incomplete ITSI episode-event searches as action errors.

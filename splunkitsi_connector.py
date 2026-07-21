@@ -637,6 +637,21 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             return action_result.get_status()
 
         for event in response:
+            for message in event.get("messages", []):
+                message_type = str(message.get("type", "")).upper()
+                message_text = str(message.get("text", "")).strip()
+                if message_type in {"ERROR", "FATAL"}:
+                    return action_result.set_status(
+                        phantom.APP_ERROR,
+                        f"Splunk ITSI search failed: {message_text or 'upstream search error'}",
+                    )
+                if message_type == "WARN" and any(marker in message_text.lower() for marker in ("cancel", "incomplete", "truncat")):
+                    return action_result.set_status(
+                        phantom.APP_ERROR,
+                        f"Splunk ITSI search returned incomplete results: {message_text}",
+                    )
+
+        for event in response:
             if event.get("result"):
                 action_result.add_data(event["result"])
 
@@ -907,9 +922,15 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
+        enabled = OBJECT_STATUS_VALUES.get(service_status)
+        if enabled is None:
+            return action_result.set_status(
+                phantom.APP_ERROR,
+                "Invalid service status. Must be one of: {}.".format(", ".join(OBJECT_STATUS_VALUES)),
+            )
+
         # Create payload for POST request
-        payload = dict()
-        payload["enabled"] = OBJECT_STATUS_VALUES.get(service_status, 1)
+        payload = {"enabled": enabled}
 
         # Create params for POST request
         params = {"is_partial_data": "1"}

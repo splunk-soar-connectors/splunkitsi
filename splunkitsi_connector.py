@@ -637,6 +637,21 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
             return action_result.get_status()
 
         for event in response:
+            for message in event.get("messages", []):
+                message_type = str(message.get("type", "")).upper()
+                message_text = str(message.get("text", "")).strip()
+                if message_type in {"ERROR", "FATAL"}:
+                    return action_result.set_status(
+                        phantom.APP_ERROR,
+                        f"Splunk ITSI search failed: {message_text or 'upstream search error'}",
+                    )
+                if message_type == "WARN" and any(marker in message_text.lower() for marker in ("cancel", "incomplete", "truncat")):
+                    return action_result.set_status(
+                        phantom.APP_ERROR,
+                        f"Splunk ITSI search returned incomplete results: {message_text}",
+                    )
+
+        for event in response:
             if event.get("result"):
                 action_result.add_data(event["result"])
 

@@ -17,6 +17,7 @@
 import json
 import time
 from urllib.parse import quote
+from xml.parsers import expat
 
 import phantom.app as phantom
 import requests
@@ -31,6 +32,10 @@ from splunkitsi_consts import *
 class RetVal(tuple):
     def __new__(cls, val1, val2=None):
         return tuple.__new__(RetVal, (val1, val2))
+
+
+class XmlDtdError(ValueError):
+    pass
 
 
 class SplunkItServiceIntelligenceConnector(BaseConnector):
@@ -186,10 +191,17 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         resp_json = None
         try:
             xml_content = r.content
-            if b"<!DOCTYPE" in xml_content.upper():
-                return RetVal(action_result.set_status(phantom.APP_ERROR, "XML response contains a DTD, refusing to parse"))
             if xml_content:
+                parser = expat.ParserCreate()
+
+                def reject_doctype(*_args):
+                    raise XmlDtdError
+
+                parser.StartDoctypeDeclHandler = reject_doctype
+                parser.Parse(xml_content, True)
                 resp_json = xmltodict.parse(xml_content)
+        except XmlDtdError:
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "XML response contains a DTD, refusing to parse"))
         except Exception as e:
             error_message = self._get_error_message_from_exception(e)
             return RetVal(action_result.set_status(phantom.APP_ERROR, f"Unable to parse XML response. Error: {error_message}"))
@@ -210,30 +222,40 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), resp_json)
 
     def _process_response(self, r, action_result):
+        content_type = r.headers.get("Content-Type", "").lower()
+        if len(r.content) > SPLUNKITSI_MAX_RESPONSE_SIZE:
+            return RetVal(
+                action_result.set_status(
+                    phantom.APP_ERROR,
+                    f"Response exceeds the {SPLUNKITSI_MAX_RESPONSE_SIZE}-byte limit, refusing to parse",
+                )
+            )
+
         # store the r_text in debug data, it will get dumped in the logs if the action fails
         if hasattr(action_result, "add_debug_data"):
             action_result.add_debug_data({"r_status_code": r.status_code})
-            action_result.add_debug_data({"r_text": r.text})
             action_result.add_debug_data({"r_headers": r.headers})
+            if "xml" not in content_type:
+                action_result.add_debug_data({"r_text": r.text})
 
         # Process each 'Content-Type' of response separately
 
         # Process a json response
-        if "json" in r.headers.get("Content-Type", "") and self.get_action_identifier() == "get_episode_events":
+        if "json" in content_type and self.get_action_identifier() == "get_episode_events":
             return self._process_multiple_json_response(r, action_result)
 
         # Process a json response
-        if "json" in r.headers.get("Content-Type", ""):
+        if "json" in content_type:
             return self._process_json_response(r, action_result)
 
         # Process an HTML response, Do this no matter what the api talks.
         # There is a high chance of a PROXY in between phantom and the rest of
         # world, in case of errors, PROXY's return HTML, this function parses
         # the error and adds it to the action_result.
-        if "html" in r.headers.get("Content-Type", ""):
+        if "html" in content_type:
             return self._process_html_response(r, action_result)
 
-        if "xml" in r.headers.get("Content-Type", ""):
+        if "xml" in content_type:
             return self._process_xml_response(r, action_result)
 
         # it's not content-type that is to be parsed, handle an empty response
@@ -267,7 +289,7 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
         try:
             r = request_func(
-                url, auth=self._auth, verify=config.get("verify_server_cert", False), timeout=SPLUNKITSI_DEFAULT_REQUEST_TIMEOUT, **kwargs
+                url, auth=self._auth, verify=config.get("verify_server_cert", True), timeout=SPLUNKITSI_DEFAULT_REQUEST_TIMEOUT, **kwargs
             )
         except requests.exceptions.ConnectionError:
             error_message = "Error Details: Connection Refused from the Server"

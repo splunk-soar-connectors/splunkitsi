@@ -51,7 +51,10 @@ class SplunkItServiceIntelligenceConnector(BaseConnector):
 
     @staticmethod
     def _quote_url_path_component(value):
-        return quote(str(value), safe="")
+        value = str(value)
+        if value in {".", ".."}:
+            raise ValueError("ITSI identifier cannot be a URL dot segment")
+        return quote(value, safe="")
 
     @staticmethod
     def _escape_spl_string_literal(value):

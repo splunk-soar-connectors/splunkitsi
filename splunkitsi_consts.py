@@ -43,3 +43,4 @@ RELATIVE_TIME_VALUES = {"15 min": "15m", "60 mins": "60m", "4 hours": "4h", "24 
 
 # Based on high volume data
 SPLUNKITSI_DEFAULT_REQUEST_TIMEOUT = 600  # in seconds
+SPLUNKITSI_MAX_RESPONSE_SIZE = 10 * 1024 * 1024
